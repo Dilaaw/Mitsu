@@ -50,32 +50,30 @@ const Rules = () => {
   const router = useRouter();
 
   const loadPrompts = () => {
-    window.electron.ipcRenderer
-      .invoke("prompts:load")
-      .then(
-        (
-          data: {
-            buildPrompt: Omit<PromptState, "originalContent">;
-            askPrompt: Omit<PromptState, "originalContent">;
-            aiRules: Omit<PromptState, "originalContent">;
-          } | null,
-        ) => {
-          if (data) {
-            setBuildPrompt({
-              ...data.buildPrompt,
-              originalContent: data.buildPrompt.content,
-            });
-            setAskPrompt({
-              ...data.askPrompt,
-              originalContent: data.askPrompt.content,
-            });
-            setAiRules({
-              ...data.aiRules,
-              originalContent: data.aiRules.content,
-            });
-          }
-        },
-      );
+    window.electron.ipcRenderer.invoke("prompts:load").then(
+      (
+        data: {
+          buildPrompt: Omit<PromptState, "originalContent">;
+          askPrompt: Omit<PromptState, "originalContent">;
+          aiRules: Omit<PromptState, "originalContent">;
+        } | null,
+      ) => {
+        if (data) {
+          setBuildPrompt({
+            ...data.buildPrompt,
+            originalContent: data.buildPrompt.content,
+          });
+          setAskPrompt({
+            ...data.askPrompt,
+            originalContent: data.askPrompt.content,
+          });
+          setAiRules({
+            ...data.aiRules,
+            originalContent: data.aiRules.content,
+          });
+        }
+      },
+    );
   };
 
   useEffect(() => {
@@ -118,7 +116,7 @@ const Rules = () => {
         </div>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="dark:bg-gray-800">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
@@ -144,9 +142,10 @@ const Rules = () => {
               <Textarea
                 id="buildPrompt"
                 value={buildPrompt.content}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onChange={(e) =>
                   setBuildPrompt({ ...buildPrompt, content: e.target.value })
                 }
+                className="bg-slate-100 dark:bg-gray-700"
                 rows={15}
               />
             </CardContent>
@@ -168,7 +167,7 @@ const Rules = () => {
             </CardFooter>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-gray-800">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
@@ -195,9 +194,10 @@ const Rules = () => {
               <Textarea
                 id="askPrompt"
                 value={askPrompt.content}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onChange={(e) =>
                   setAskPrompt({ ...askPrompt, content: e.target.value })
                 }
+                className="bg-slate-100 dark:bg-gray-700"
                 rows={15}
               />
             </CardContent>
@@ -219,7 +219,7 @@ const Rules = () => {
             </CardFooter>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-gray-800">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
@@ -244,9 +244,10 @@ const Rules = () => {
               <Textarea
                 id="aiRules"
                 value={aiRules.content}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onChange={(e) =>
                   setAiRules({ ...aiRules, content: e.target.value })
                 }
+                className="bg-slate-100 dark:bg-gray-700"
                 rows={15}
               />
             </CardContent>
