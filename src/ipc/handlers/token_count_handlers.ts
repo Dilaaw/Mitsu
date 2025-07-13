@@ -1,10 +1,7 @@
 import { db } from "../../db";
 import { chats } from "../../db/schema";
 import { eq } from "drizzle-orm";
-import {
-  constructSystemPrompt,
-  readAiRules,
-} from "../../prompts/system_prompt";
+import { getPrompts } from "../../main/prompt_manager";
 import {
   SUPABASE_AVAILABLE_SYSTEM_PROMPT,
   SUPABASE_NOT_AVAILABLE_SYSTEM_PROMPT,
@@ -53,11 +50,13 @@ export function registerTokenCountHandlers() {
       const inputTokens = estimateTokens(req.input);
 
       const settings = readSettings();
+      const { buildPrompt, askPrompt, aiRules } = getPrompts();
       // Count system prompt tokens
-      let systemPrompt = constructSystemPrompt({
-        aiRules: await readAiRules(getDyadAppPath(chat.app.path)),
-        chatMode: settings.selectedChatMode,
-      });
+      let systemPrompt =
+        settings.selectedChatMode === "ask" ? askPrompt : buildPrompt;
+      if (systemPrompt) {
+        systemPrompt = systemPrompt.replace("[[AI_RULES]]", aiRules);
+      }
       let supabaseContext = "";
 
       if (chat.app?.supabaseProjectId) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { ProviderSettingsGrid } from "@/components/ProviderSettings";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { IpcClient } from "@/ipc/ipc_client";
@@ -12,7 +12,7 @@ import { useSettings } from "@/hooks/useSettings";
 import { useAppVersion } from "@/hooks/useAppVersion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, Link } from "@tanstack/react-router";
 import { GitHubIntegration } from "@/components/GitHubIntegration";
 import { SupabaseIntegration } from "@/components/SupabaseIntegration";
 import { Switch } from "@/components/ui/switch";
@@ -21,7 +21,7 @@ import { AutoFixProblemsSwitch } from "@/components/AutoFixProblemsSwitch";
 import { AutoUpdateSwitch } from "@/components/AutoUpdateSwitch";
 import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
 
-export default function SettingsPage() {
+export default function SettingsIndex() {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const appVersion = useAppVersion();
@@ -303,6 +303,12 @@ export function AISettings() {
 
       <div className="mt-4">
         <MaxChatTurnsSelector />
+      </div>
+
+      <div className="mt-4">
+        <Link to="/settings/rules">
+          <Button variant="outline">Edit System Prompts</Button>
+        </Link>
       </div>
     </div>
   );

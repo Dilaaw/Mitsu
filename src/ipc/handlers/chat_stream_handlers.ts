@@ -10,10 +10,7 @@ import {
 import { db } from "../../db";
 import { chats, messages } from "../../db/schema";
 import { and, eq, isNull } from "drizzle-orm";
-import {
-  constructSystemPrompt,
-  readAiRules,
-} from "../../prompts/system_prompt";
+import { getPrompts } from "../../main/prompt_manager";
 import {
   SUPABASE_AVAILABLE_SYSTEM_PROMPT,
   SUPABASE_NOT_AVAILABLE_SYSTEM_PROMPT,
@@ -421,10 +418,12 @@ ${componentSnippet}
           );
         }
 
-        let systemPrompt = constructSystemPrompt({
-          aiRules: await readAiRules(getDyadAppPath(updatedChat.app.path)),
-          chatMode: settings.selectedChatMode,
-        });
+        const { buildPrompt, askPrompt, aiRules } = getPrompts();
+        let systemPrompt =
+          settings.selectedChatMode === "ask" ? askPrompt : buildPrompt;
+        if (systemPrompt) {
+          systemPrompt = systemPrompt.replace("[[AI_RULES]]", aiRules);
+        }
         if (
           updatedChat.app?.supabaseProjectId &&
           settings.supabase?.accessToken?.value

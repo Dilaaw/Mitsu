@@ -4,6 +4,8 @@ import { homeRoute } from "./routes/home";
 import { chatRoute } from "./routes/chat";
 import { settingsRoute } from "./routes/settings";
 import { providerSettingsRoute } from "./routes/settings/providers/$provider";
+import { rulesRoute } from "./routes/settings/rules";
+import { settingsIndexRoute } from "./routes/settings/index";
 import { appDetailsRoute } from "./routes/app-details";
 import { hubRoute } from "./routes/hub";
 
@@ -12,7 +14,11 @@ const routeTree = rootRoute.addChildren([
   hubRoute,
   chatRoute,
   appDetailsRoute,
-  settingsRoute.addChildren([providerSettingsRoute]),
+  settingsRoute.addChildren([
+    providerSettingsRoute,
+    rulesRoute,
+    settingsIndexRoute,
+  ]),
 ]);
 
 // src/components/NotFoundRedirect.tsx
