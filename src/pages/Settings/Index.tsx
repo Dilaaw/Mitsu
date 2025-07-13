@@ -11,7 +11,7 @@ import { ThinkingBudgetSelector } from "@/components/ThinkingBudgetSelector";
 import { useSettings } from "@/hooks/useSettings";
 import { useAppVersion } from "@/hooks/useAppVersion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useRouter, Link } from "@tanstack/react-router";
 import { GitHubIntegration } from "@/components/GitHubIntegration";
 import { SupabaseIntegration } from "@/components/SupabaseIntegration";
@@ -305,11 +305,26 @@ export function AISettings() {
         <MaxChatTurnsSelector />
       </div>
 
-      <div className="mt-4">
-        <Link to="/settings/rules">
-          <Button variant="outline">Edit System Prompts</Button>
-        </Link>
-      </div>
+      <Link
+        to="/settings/rules"
+        className="mt-6 block p-4 border rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-gray-800/50 dark:hover:bg-gray-700/50 transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-yellow-500" />
+              <h3 className="text-base font-medium text-gray-900 dark:text-white">
+                Customize AI Behavior
+              </h3>
+            </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 pl-7">
+              Fine-tune the AI's personality and responses by editing the
+              underlying system prompts.
+            </p>
+          </div>
+          <ChevronRight className="h-6 w-6 text-gray-400" />
+        </div>
+      </Link>
     </div>
   );
 }
