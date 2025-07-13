@@ -307,7 +307,7 @@ export function AISettings() {
 
       <Link
         to="/settings/rules"
-        className="mt-6 block p-4 border rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-gray-800/50 dark:hover:bg-gray-700/50 transition-colors"
+        className="mt-6 block p-4 border rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 dark:hover:bg-gray-600 border-slate-300 dark:border-gray-600 transition-colors"
       >
         <div className="flex items-center justify-between">
           <div>
