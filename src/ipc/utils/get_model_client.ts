@@ -219,6 +219,20 @@ function getRegularModelClient(
         backupModelClients: [],
       };
     }
+    case "moonshot": {
+      const provider = createOpenAICompatible({
+        name: model.name,
+        apiKey: apiKey,
+        baseURL: "https://api.moonshot.ai/v1",
+      });
+      return {
+        modelClient: {
+          model: provider(model.name),
+          builtinProviderId: providerId,
+        },
+        backupModelClients: [],
+      };
+    }
     case "ollama": {
       // Ollama typically runs locally and doesn't require an API key in the same way
       const provider = createOllama({

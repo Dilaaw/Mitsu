@@ -141,6 +141,16 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
       contextWindow: 65_536,
     },
   ],
+  moonshot: [
+    // https://platform.moonshot.ai/docs/pricing/chat#generation-model-kimi-k2
+    {
+      name: "kimi-k2-0711-preview",
+      displayName: "MoonshotAI Kimi K2",
+      description: "Excellent coder with good price for performance",
+      maxOutputTokens: 131_072,
+      contextWindow: 131_072,
+    },
+  ],
   auto: [
     {
       name: "auto",
@@ -161,6 +171,7 @@ export const PROVIDER_TO_ENV_VAR: Record<string, string> = {
   anthropic: "ANTHROPIC_API_KEY",
   google: "GEMINI_API_KEY",
   openrouter: "OPENROUTER_API_KEY",
+  moonshot: "MOONSHOT_API_KEY",
 };
 
 export const CLOUD_PROVIDERS: Record<
@@ -195,6 +206,12 @@ export const CLOUD_PROVIDERS: Record<
     hasFreeTier: true,
     websiteUrl: "https://openrouter.ai/settings/keys",
     gatewayPrefix: "openrouter/",
+  },
+  moonshot: {
+    displayName: "MoonshotAI",
+    hasFreeTier: false,
+    websiteUrl: "https://platform.moonshot.ai/console/api-keys",
+    gatewayPrefix: "moonshot/",
   },
   auto: {
     displayName: "Dyad",
