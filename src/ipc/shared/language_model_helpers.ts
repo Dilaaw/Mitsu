@@ -133,6 +133,13 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
       maxOutputTokens: 32_000,
       contextWindow: 128_000,
     },
+    {
+      name: "moonshotai/kimi-k2:free",
+      displayName: "MoonshotAI Kimi K2 (free)",
+      description: "Excellent coder",
+      maxOutputTokens: 65_536,
+      contextWindow: 65_536,
+    },
   ],
   auto: [
     {
