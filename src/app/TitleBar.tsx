@@ -78,7 +78,8 @@ export const TitleBar = () => {
   return (
     <>
       <div className="@container z-11 w-full h-11 bg-(--sidebar) absolute top-0 left-0 app-region-drag flex items-center">
-        <div className="pl-18"></div>
+        <div className={`${showWindowControls ? "pl-2" : "pl-18"}`}></div>
+
         <img src={logo} alt="Dyad Logo" className="w-6 h-6 mr-0.5" />
         <Button
           data-testid="title-bar-app-name-button"
@@ -95,7 +96,7 @@ export const TitleBar = () => {
 
         {/* Preview Header */}
         {location.pathname === "/chat" && (
-          <div className="flex-1 flex justify-end no-app-region-drag">
+          <div className="flex-1 flex justify-end">
             <PreviewHeader />
           </div>
         )}
@@ -230,7 +231,7 @@ export function AICreditStatus({ userBudget }: { userBudget: UserBudgetInfo }) {
   return (
     <Tooltip>
       <TooltipTrigger>
-        <div className="text-xs mt-0.5">{remaining} credits</div>
+        <div className="text-xs pl-1 mt-0.5">{remaining} credits</div>
       </TooltipTrigger>
       <TooltipContent>
         <div>
