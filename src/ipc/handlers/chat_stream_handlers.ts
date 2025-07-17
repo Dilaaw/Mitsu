@@ -422,7 +422,8 @@ ${componentSnippet}
         let systemPrompt =
           settings.selectedChatMode === "ask" ? askPrompt : buildPrompt;
         if (systemPrompt) {
-          systemPrompt = systemPrompt.replace("[[AI_RULES]]", aiRules);
+          const finalAiRules = codebaseInfo.includes(aiRules) ? "" : aiRules;
+          systemPrompt = systemPrompt.replace("[[AI_RULES]]", finalAiRules);
         }
         if (
           updatedChat.app?.supabaseProjectId &&
