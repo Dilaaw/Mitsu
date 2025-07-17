@@ -137,7 +137,7 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
       name: "moonshotai/kimi-k2:free",
       displayName: "MoonshotAI Kimi K2 (free)",
       description: "Excellent coder",
-      maxOutputTokens: 65_536,
+      maxOutputTokens: 16_384,
       contextWindow: 65_536,
     },
   ],
