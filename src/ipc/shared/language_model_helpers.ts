@@ -126,6 +126,14 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
       maxOutputTokens: 32_000,
       contextWindow: 128_000,
     },
+    // https://openrouter.ai/moonshotai/kimi-k2:free
+    {
+      name: "moonshotai/kimi-k2:free",
+      displayName: "MoonshotAI Kimi K2 (free)",
+      description: "Excellent coder",
+      maxOutputTokens: 16_384,
+      contextWindow: 65_536,
+    },
     // https://openrouter.ai/moonshotai/kimi-k2
     {
       name: "moonshotai/kimi-k2",
@@ -134,19 +142,13 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
       maxOutputTokens: 32_000,
       contextWindow: 131_000,
     },
+    // https://openrouter.ai/deepseek/deepseek-r1-0528
     {
       name: "deepseek/deepseek-r1-0528",
       displayName: "DeepSeek R1",
       description: "Good reasoning model with excellent price for performance",
       maxOutputTokens: 32_000,
       contextWindow: 128_000,
-    },
-    {
-      name: "moonshotai/kimi-k2:free",
-      displayName: "MoonshotAI Kimi K2 (free)",
-      description: "Excellent coder",
-      maxOutputTokens: 16_384,
-      contextWindow: 65_536,
     },
   ],
   moonshot: [
