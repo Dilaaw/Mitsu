@@ -1,5 +1,5 @@
 import { Home, Inbox, Settings, HelpCircle, Store } from "lucide-react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { useSidebar } from "@/components/ui/sidebar"; // import useSidebar hook
 import { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
@@ -21,6 +21,7 @@ import { ChatList } from "./ChatList";
 import { AppList } from "./AppList";
 import { HelpDialog } from "./HelpDialog"; // Import the new dialog
 import { SettingsList } from "./SettingsList";
+import AnimatedNavLink from "./ui/AnimatedNavLink";
 
 // Menu items.
 const items = [
@@ -28,21 +29,29 @@ const items = [
     title: "Apps",
     to: "/",
     icon: Home,
+    glowColor: "#007BFF",
+    hoverColor: "#007BFF",
   },
   {
     title: "Chat",
     to: "/chat",
     icon: Inbox,
+    glowColor: "#FFA500",
+    hoverColor: "#FFA500",
   },
   {
     title: "Settings",
     to: "/settings",
     icon: Settings,
+    glowColor: "#28A745",
+    hoverColor: "#28A745",
   },
   {
     title: "Hub",
     to: "/hub",
     icon: Store,
+    glowColor: "#DC3545",
+    hoverColor: "#DC3545",
   },
 ];
 
@@ -165,10 +174,7 @@ function AppIcons({
   const pathname = routerState.location.pathname;
 
   return (
-    // When collapsed: only show the main menu
     <SidebarGroup className="pr-0">
-      {/* <SidebarGroupLabel>Dyad</SidebarGroupLabel> */}
-
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => {
@@ -176,34 +182,28 @@ function AppIcons({
               (item.to === "/" && pathname === "/") ||
               (item.to !== "/" && pathname.startsWith(item.to));
 
+            // Derive the hover key from the item's title
+            const hoverKey = item.title.toLowerCase() as
+              | "app"
+              | "chat"
+              | "settings"
+              | "hub";
+
             return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  asChild
-                  size="sm"
-                  className="font-medium w-14"
-                >
-                  <Link
-                    to={item.to}
-                    className={`flex flex-col items-center gap-1 h-14 mb-2 rounded-2xl ${
-                      isActive ? "bg-sidebar-accent" : ""
-                    }`}
-                    onMouseEnter={() => {
-                      if (item.title === "Apps") {
-                        onHoverChange("start-hover:app");
-                      } else if (item.title === "Chat") {
-                        onHoverChange("start-hover:chat");
-                      } else if (item.title === "Settings") {
-                        onHoverChange("start-hover:settings");
-                      }
-                    }}
-                  >
-                    <div className="flex flex-col items-center gap-1">
-                      <item.icon className="h-5 w-5" />
-                      <span className={"text-xs"}>{item.title}</span>
-                    </div>
-                  </Link>
-                </SidebarMenuButton>
+              <SidebarMenuItem
+                key={item.title}
+                onMouseEnter={() =>
+                  onHoverChange(`start-hover:${hoverKey}` as HoverState)
+                }
+              >
+                <AnimatedNavLink
+                  icon={item.icon}
+                  label={item.title}
+                  href={item.to}
+                  glowColor={item.glowColor}
+                  hoverColor={item.hoverColor}
+                  isActive={isActive}
+                />
               </SidebarMenuItem>
             );
           })}
