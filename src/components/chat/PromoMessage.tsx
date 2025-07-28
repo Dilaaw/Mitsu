@@ -56,7 +56,11 @@ export function Message({ spans }: MessageConfig) {
 export const TURBO_EDITS_PROMO_MESSAGE: MessageConfig = {
   spans: [
     { type: "text", content: "Tired of waiting on AI?" },
-    { type: "link", content: " Get Dyad Pro", url: "https://dyad.sh/pro#ai" },
+    {
+      type: "link",
+      content: " Get Mitsu Pro",
+      url: "https://github.com/Dilaaw/Mitsu",
+    },
     { type: "text", content: " for faster edits with Turbo Edits." },
   ],
 };
@@ -66,8 +70,8 @@ export const SMART_CONTEXT_PROMO_MESSAGE: MessageConfig = {
     { type: "text", content: "Save up to 5x on AI costs with " },
     {
       type: "link",
-      content: "Dyad Pro's Smart Context",
-      url: "https://dyad.sh/pro#ai",
+      content: "Mitsu Pro's Smart Context",
+      url: "https://github.com/Dilaaw/Mitsu",
     },
   ],
 };
@@ -82,16 +86,16 @@ export const DIFFERENT_MODEL_TIP: MessageConfig = {
   ],
 };
 
-export const REDDIT_TIP: MessageConfig = {
+export const GITHUB_OPEN_SOURCE_TIP: MessageConfig = {
   spans: [
     {
       type: "text",
-      content: "Join 600+ builders in the ",
+      content: "Mitsu is also available as open source on ",
     },
     {
       type: "link",
-      content: "Dyad subreddit",
-      url: "https://www.reddit.com/r/dyadbuilders/",
+      content: "GitHub",
+      url: "https://github.com/Dilaaw/Mitsu",
     },
   ],
 };
@@ -114,20 +118,6 @@ export const UPLOAD_CHAT_TIP: MessageConfig = {
     },
   ],
 };
-// https://www.youtube.com/watch?v=a7OoruOkkeg&list=PL1xR2pfIiRlW7mgr9AS95OkFQBtvrSlO5
-export const BUILD_A_BIBLE_APP_TIP: MessageConfig = {
-  spans: [
-    {
-      type: "link",
-      content: "Watch",
-      url: "https://www.youtube.com/watch?v=a7OoruOkkeg&list=PL1xR2pfIiRlW7mgr9AS95OkFQBtvrSlO5",
-    },
-    {
-      type: "text",
-      content: " the creator of Dyad build a Bible app step-by-step",
-    },
-  ],
-};
 
 export const DEBUGGING_TIPS_TIP: MessageConfig = {
   spans: [
@@ -138,7 +128,11 @@ export const DEBUGGING_TIPS_TIP: MessageConfig = {
     {
       type: "link",
       content: "debugging tips",
-      url: "https://www.dyad.sh/docs/guides/debugging",
+      url: "https://github.com/Dilaaw/Mitsu",
+    },
+    {
+      type: "text",
+      content: " (Mitsu is based on Dyad)",
     },
   ],
 };
@@ -153,7 +147,7 @@ export const AI_RULES_TIP: MessageConfig = {
     {
       type: "link",
       content: "AI rules",
-      url: "https://www.dyad.sh/docs/guides/ai-rules",
+      url: "https://github.com/Dilaaw/Mitsu",
     },
   ],
 };
@@ -177,22 +171,22 @@ export const ROADMAP_TIP: MessageConfig = {
     {
       type: "link",
       content: "roadmap",
-      url: "https://www.dyad.sh/docs/roadmap",
+      url: "https://github.com/Dilaaw/Mitsu",
     },
   ],
 };
 
-// Like Dyad? Star it on GitHub https://github.com/dyad-sh/dyad/
+// Like Mitsu? Star it on GitHub https://github.com/Dilaaw/Mitsu/
 export const GITHUB_TIP: MessageConfig = {
   spans: [
     {
       type: "text",
-      content: "Like Dyad? Star it on ",
+      content: "Like Mitsu? Star it on ",
     },
     {
       type: "link",
       content: "GitHub",
-      url: "https://github.com/dyad-sh/dyad",
+      url: "https://github.com/Dilaaw/Mitsu",
     },
   ],
 };
@@ -201,10 +195,8 @@ const ALL_MESSAGES = [
   TURBO_EDITS_PROMO_MESSAGE,
   SMART_CONTEXT_PROMO_MESSAGE,
   DIFFERENT_MODEL_TIP,
-  REDDIT_TIP,
   REPORT_A_BUG_TIP,
   UPLOAD_CHAT_TIP,
-  BUILD_A_BIBLE_APP_TIP,
   DEBUGGING_TIPS_TIP,
   AI_RULES_TIP,
   NEW_CHAT_TIP,

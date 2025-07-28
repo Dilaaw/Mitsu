@@ -111,17 +111,17 @@ function preprocessUnclosedTags(content: string): {
   inProgressTags: Map<string, Set<number>>;
 } {
   const customTagNames = [
-    "dyad-write",
-    "dyad-rename",
-    "dyad-delete",
-    "dyad-add-dependency",
-    "dyad-execute-sql",
-    "dyad-add-integration",
-    "dyad-output",
-    "dyad-problem-report",
-    "dyad-chat-summary",
-    "dyad-edit",
-    "dyad-codebase-context",
+    "mitsu-write",
+    "mitsu-rename",
+    "mitsu-delete",
+    "mitsu-add-dependency",
+    "mitsu-execute-sql",
+    "mitsu-add-integration",
+    "mitsu-output",
+    "mitsu-problem-report",
+    "mitsu-chat-summary",
+    "mitsu-edit",
+    "mitsu-codebase-context",
     "think",
   ];
 
@@ -177,17 +177,17 @@ function parseCustomTags(content: string): ContentPiece[] {
   const { processedContent, inProgressTags } = preprocessUnclosedTags(content);
 
   const customTagNames = [
-    "dyad-write",
-    "dyad-rename",
-    "dyad-delete",
-    "dyad-add-dependency",
-    "dyad-execute-sql",
-    "dyad-add-integration",
-    "dyad-output",
-    "dyad-problem-report",
-    "dyad-chat-summary",
-    "dyad-edit",
-    "dyad-codebase-context",
+    "mitsu-write",
+    "mitsu-rename",
+    "mitsu-delete",
+    "mitsu-add-dependency",
+    "mitsu-execute-sql",
+    "mitsu-add-integration",
+    "mitsu-output",
+    "mitsu-problem-report",
+    "mitsu-chat-summary",
+    "mitsu-edit",
+    "mitsu-codebase-context",
     "think",
   ];
 
@@ -286,7 +286,7 @@ function renderCustomTag(
           {content}
         </DyadThink>
       );
-    case "dyad-write":
+    case "mitsu-write":
       return (
         <DyadWrite
           node={{
@@ -301,7 +301,7 @@ function renderCustomTag(
         </DyadWrite>
       );
 
-    case "dyad-rename":
+    case "mitsu-rename":
       return (
         <DyadRename
           node={{
@@ -315,7 +315,7 @@ function renderCustomTag(
         </DyadRename>
       );
 
-    case "dyad-delete":
+    case "mitsu-delete":
       return (
         <DyadDelete
           node={{
@@ -328,7 +328,7 @@ function renderCustomTag(
         </DyadDelete>
       );
 
-    case "dyad-add-dependency":
+    case "mitsu-add-dependency":
       return (
         <DyadAddDependency
           node={{
@@ -341,7 +341,7 @@ function renderCustomTag(
         </DyadAddDependency>
       );
 
-    case "dyad-execute-sql":
+    case "mitsu-execute-sql":
       return (
         <DyadExecuteSql
           node={{
@@ -355,7 +355,7 @@ function renderCustomTag(
         </DyadExecuteSql>
       );
 
-    case "dyad-add-integration":
+    case "mitsu-add-integration":
       return (
         <DyadAddIntegration
           node={{
@@ -368,7 +368,7 @@ function renderCustomTag(
         </DyadAddIntegration>
       );
 
-    case "dyad-edit":
+    case "mitsu-edit":
       return (
         <DyadEdit
           node={{
@@ -383,7 +383,7 @@ function renderCustomTag(
         </DyadEdit>
       );
 
-    case "dyad-codebase-context":
+    case "mitsu-codebase-context":
       return (
         <DyadCodebaseContext
           node={{
@@ -397,7 +397,7 @@ function renderCustomTag(
         </DyadCodebaseContext>
       );
 
-    case "dyad-output":
+    case "mitsu-output":
       return (
         <DyadOutput
           type={attributes.type as "warning" | "error"}
@@ -407,15 +407,15 @@ function renderCustomTag(
         </DyadOutput>
       );
 
-    case "dyad-problem-report":
+    case "mitsu-problem-report":
       return (
         <DyadProblemSummary summary={attributes.summary}>
           {content}
         </DyadProblemSummary>
       );
 
-    case "dyad-chat-summary":
-      // Don't render anything for dyad-chat-summary
+    case "mitsu-chat-summary":
+      // Don't render anything for mitsu-chat-summary
       return null;
 
     default:

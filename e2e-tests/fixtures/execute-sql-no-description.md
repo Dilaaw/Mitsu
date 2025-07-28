@@ -1,7 +1,7 @@
 No description!
 
-<dyad-execute-sql>
+<mitsu-execute-sql>
 DROP TABLE users;
-</dyad-execute-sql>
+</mitsu-execute-sql>
 
 Done.

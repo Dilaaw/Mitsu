@@ -14,11 +14,11 @@ make sure you ALSO add this dependency: @supabase/supabase-js.
 
 Example output:
 
-<dyad-write path="src/integrations/supabase/client.ts" description="Creating a supabase client.">
+<mitsu-write path="src/integrations/supabase/client.ts" description="Creating a supabase client.">
 $$SUPABASE_CLIENT_CODE$$
-</dyad-write>
+</mitsu-write>
 
-<dyad-add-dependency packages="@supabase/supabase-js"></dyad-add-dependency>
+<mitsu-add-dependency packages="@supabase/supabase-js"></mitsu-add-dependency>
 
 ## Auth
 
@@ -73,7 +73,7 @@ useEffect(() => {
 
 Login page (NOTE: THIS FILE DOES NOT EXIST. YOU MUST GENERATE IT YOURSELF.):
 
-<dyad-write path="src/pages/Login.tsx" description="Creating a login page.">
+<mitsu-write path="src/pages/Login.tsx" description="Creating a login page.">
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 function Login() {
@@ -89,16 +89,16 @@ function Login() {
     />
   );
 }
-</dyad-write>
+</mitsu-write>
 
 
 ## Database
 
 If the user wants to use the database, use the following syntax:
 
-<dyad-execute-sql description="Get all users">
+<mitsu-execute-sql description="Get all users">
 SELECT * FROM users;
-</dyad-execute-sql>
+</mitsu-execute-sql>
 
 The description should be a short description of what the code is doing and be understandable by semi-technical users.
 
@@ -110,7 +110,7 @@ If the user wants to create a user profile, use the following code:
 
 ### Create profiles table in public schema
 
-<dyad-execute-sql description="Create profiles table in public schema">
+<mitsu-execute-sql description="Create profiles table in public schema">
 CREATE TABLE public.profiles (
   id UUID NOT NULL REFERENCES auth.users ON DELETE CASCADE,
   first_name TEXT,
@@ -125,7 +125,7 @@ create policy "Public profiles are viewable by everyone." on profiles for select
 create policy "Users can insert their own profile." on profiles for insert with check ( auth.uid() = id );
 
 create policy "Users can update own profile." on profiles for update using ( auth.uid() = id );
-</dyad-execute-sql>
+</mitsu-execute-sql>
 
 **IMPORTANT:** For security, Auth schema isn't exposed in the API. Create user tables in public schema to access user data via API.
 
@@ -137,7 +137,7 @@ create policy "Users can update own profile." on profiles for update using ( aut
 
 ### Function to insert profile when user signs up
 
-<dyad-execute-sql description="Create function to insert profile when user signs up">
+<mitsu-execute-sql description="Create function to insert profile when user signs up">
 CREATE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE PLPGSQL
@@ -154,7 +154,7 @@ $$;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
-</dyad-execute-sql>
+</mitsu-execute-sql>
 
 ## Server-side Edge Functions
 
@@ -170,8 +170,8 @@ CREATE TRIGGER on_auth_user_created
 1. Location:
 - Write functions in the supabase/functions folder
 - Each function should be in a standalone directory where the main file is index.ts (e.g., supabase/functions/hello/index.ts)
-- Make sure you use <dyad-write> tags to make changes to edge functions. 
-- The function will be deployed automatically when the user approves the <dyad-write> changes for edge functions.
+- Make sure you use <mitsu-write> tags to make changes to edge functions. 
+- The function will be deployed automatically when the user approves the <mitsu-write> changes for edge functions.
 - Do NOT tell the user to manually deploy the edge function using the CLI or Supabase Console. It's unhelpful and not needed.
 
 
@@ -234,7 +234,7 @@ Use <resource-link> to link to the relevant edge function
 
 11. Edge Function Template:
 
-<dyad-write path="supabase/functions/hello.ts" description="Creating a hello world edge function.">
+<mitsu-write path="supabase/functions/hello.ts" description="Creating a hello world edge function.">
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 
@@ -249,7 +249,7 @@ serve(async (req) => {
   }
   // ... function logic
 })
-</dyad-write>
+</mitsu-write>
 
 `;
 
@@ -259,7 +259,7 @@ tell them that they need to add supabase to their app.
 
 The following response will show a button that allows the user to add supabase to their app.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 
 # Examples
 
@@ -273,7 +273,7 @@ I want to use supabase in my app.
 
 You need to first add Supabase to your app.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 
 ## Example 2: User wants to add auth to their app
 
@@ -285,5 +285,5 @@ I want to add auth to my app.
 
 You need to first add Supabase to your app and then we can add auth.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 `;

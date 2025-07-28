@@ -29,14 +29,14 @@ export async function executeAddDependency({
   // Update the message content with the installation results
   const updatedContent = message.content.replace(
     new RegExp(
-      `<dyad-add-dependency packages="${packages.join(
+      `<mitsu-add-dependency packages="${packages.join(
         " ",
-      )}">[^<]*</dyad-add-dependency>`,
+      )}">[^<]*</mitsu-add-dependency>`,
       "g",
     ),
-    `<dyad-add-dependency packages="${packages.join(
+    `<mitsu-add-dependency packages="${packages.join(
       " ",
-    )}">${installResults}</dyad-add-dependency>`,
+    )}">${installResults}</mitsu-add-dependency>`,
   );
 
   // Save the updated message back to the database

@@ -1,2 +1,2 @@
 Adding supabase...
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>

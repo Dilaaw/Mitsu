@@ -48,9 +48,9 @@ export function createStreamChunk(
 }
 
 export const CANNED_MESSAGE = `
-  <dyad-write path="file1.txt">
+  <mitsu-write path="file1.txt">
   A file (2)
-  </dyad-write>
+  </mitsu-write>
   More
   EOM`;
 

@@ -1,3 +1,3 @@
 chat1
 
-<dyad-chat-summary>Chat 1</dyad-chat-summary>
+<mitsu-chat-summary>Chat 1</mitsu-chat-summary>

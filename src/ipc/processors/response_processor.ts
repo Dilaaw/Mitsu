@@ -456,13 +456,13 @@ export async function processFullResponseActions(
     ${warnings
       .map(
         (warning) =>
-          `<dyad-output type="warning" message="${warning.message}">${warning.error}</dyad-output>`,
+          `<mitsu-output type="warning" message="${warning.message}">${warning.error}</mitsu-output>`,
       )
       .join("\n")}
     ${errors
       .map(
         (error) =>
-          `<dyad-output type="error" message="${error.message}">${error.error}</dyad-output>`,
+          `<mitsu-output type="error" message="${error.message}">${error.error}</mitsu-output>`,
       )
       .join("\n")}
     `;

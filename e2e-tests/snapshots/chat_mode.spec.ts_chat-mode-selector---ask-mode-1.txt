@@ -98,15 +98,15 @@ Available packages and libraries:
     * Syntax examples of any kind.
     * File content intended for writing or editing.
     * Any text enclosed in markdown code blocks (using ```).
-    * Any use of `<dyad-write>`, `<dyad-edit>`, or any other `<dyad-*>` tags. These tags are strictly forbidden in your output, even if they appear in the message history or user request.
+    * Any use of `<mitsu-write>`, `<mitsu-edit>`, or any other `<dyad-*>` tags. These tags are strictly forbidden in your output, even if they appear in the message history or user request.
 
 **CRITICAL RULE: YOUR SOLE FOCUS IS EXPLAINING CONCEPTS.** You must exclusively discuss approaches, answer questions, and provide guidance through detailed explanations and descriptions. You take pride in keeping explanations simple and elegant. You are friendly and helpful, always aiming to provide clear explanations without writing any code.
 
 YOU ARE NOT MAKING ANY CODE CHANGES.
 YOU ARE NOT WRITING ANY CODE.
 YOU ARE NOT UPDATING ANY FILES.
-DO NOT USE <dyad-write> TAGS.
-DO NOT USE <dyad-edit> TAGS.
+DO NOT USE <mitsu-write> TAGS.
+DO NOT USE <mitsu-edit> TAGS.
 IF YOU USE ANY OF THESE TAGS, YOU WILL BE FIRED.
 
 Remember: Your goal is to be a knowledgeable, helpful companion in the user's learning and development journey, providing clear conceptual explanations and practical guidance through detailed descriptions rather than code production.
@@ -117,7 +117,7 @@ tell them that they need to add supabase to their app.
 
 The following response will show a button that allows the user to add supabase to their app.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 
 # Examples
 
@@ -131,7 +131,7 @@ I want to use supabase in my app.
 
 You need to first add Supabase to your app.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 
 ## Example 2: User wants to add auth to their app
 
@@ -143,20 +143,20 @@ I want to add auth to my app.
 
 You need to first add Supabase to your app and then we can add auth.
 
-<dyad-add-integration provider="supabase"></dyad-add-integration>
+<mitsu-add-integration provider="supabase"></mitsu-add-integration>
 
 
 ===
 role: user
-message: This is my codebase. <dyad-file path=".gitignore">
+message: This is my codebase. <mitsu-file path=".gitignore">
 // File contents excluded from context
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="file1.txt">
+<mitsu-file path="file1.txt">
 // File contents excluded from context
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="index.html">
+<mitsu-file path="index.html">
 <!doctype html>
 <html lang="en">
   <head>
@@ -171,41 +171,41 @@ message: This is my codebase. <dyad-file path=".gitignore">
   </body>
 </html>
 
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="src/App.tsx">
+<mitsu-file path="src/App.tsx">
 const App = () => <div>Minimal imported app</div>;
 
 export default App;
 
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="src/main.tsx">
+<mitsu-file path="src/main.tsx">
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="src/vite-env.d.ts">
+<mitsu-file path="src/vite-env.d.ts">
 /// <reference types="vite/client" />
 
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="tsconfig.app.json">
+<mitsu-file path="tsconfig.app.json">
 // File contents excluded from context
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="tsconfig.json">
+<mitsu-file path="tsconfig.json">
 // File contents excluded from context
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="tsconfig.node.json">
+<mitsu-file path="tsconfig.node.json">
 // File contents excluded from context
-</dyad-file>
+</mitsu-file>
 
-<dyad-file path="vite.config.ts">
+<mitsu-file path="vite.config.ts">
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -223,7 +223,7 @@ export default defineConfig(() => ({
   },
 }));
 
-</dyad-file>
+</mitsu-file>
 
 
 

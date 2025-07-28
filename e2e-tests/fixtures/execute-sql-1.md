@@ -1,7 +1,7 @@
 Example SQL
 
-<dyad-execute-sql description="create_users_table">
+<mitsu-execute-sql description="create_users_table">
 CREATE TABLE users (id serial primary key);
-</dyad-execute-sql>
+</mitsu-execute-sql>
 
 Done.

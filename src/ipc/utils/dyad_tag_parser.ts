@@ -9,7 +9,7 @@ export function getDyadWriteTags(fullResponse: string): {
   content: string;
   description?: string;
 }[] {
-  const dyadWriteRegex = /<dyad-write([^>]*)>([\s\S]*?)<\/dyad-write>/gi;
+  const dyadWriteRegex = /<mitsu-write([^>]*)>([\s\S]*?)<\/mitsu-write>/gi;
   const pathRegex = /path="([^"]+)"/;
   const descriptionRegex = /description="([^"]+)"/;
 
@@ -39,7 +39,7 @@ export function getDyadWriteTags(fullResponse: string): {
       tags.push({ path: normalizePath(path), content, description });
     } else {
       logger.warn(
-        "Found <dyad-write> tag without a valid 'path' attribute:",
+        "Found <mitsu-write> tag without a valid 'path' attribute:",
         match[0],
       );
     }
@@ -52,7 +52,7 @@ export function getDyadRenameTags(fullResponse: string): {
   to: string;
 }[] {
   const dyadRenameRegex =
-    /<dyad-rename from="([^"]+)" to="([^"]+)"[^>]*>([\s\S]*?)<\/dyad-rename>/g;
+    /<mitsu-rename from="([^"]+)" to="([^"]+)"[^>]*>([\s\S]*?)<\/mitsu-rename>/g;
   let match;
   const tags: { from: string; to: string }[] = [];
   while ((match = dyadRenameRegex.exec(fullResponse)) !== null) {
@@ -66,7 +66,7 @@ export function getDyadRenameTags(fullResponse: string): {
 
 export function getDyadDeleteTags(fullResponse: string): string[] {
   const dyadDeleteRegex =
-    /<dyad-delete path="([^"]+)"[^>]*>([\s\S]*?)<\/dyad-delete>/g;
+    /<mitsu-delete path="([^"]+)"[^>]*>([\s\S]*?)<\/mitsu-delete>/g;
   let match;
   const paths: string[] = [];
   while ((match = dyadDeleteRegex.exec(fullResponse)) !== null) {
@@ -77,7 +77,7 @@ export function getDyadDeleteTags(fullResponse: string): string[] {
 
 export function getDyadAddDependencyTags(fullResponse: string): string[] {
   const dyadAddDependencyRegex =
-    /<dyad-add-dependency packages="([^"]+)">[^<]*<\/dyad-add-dependency>/g;
+    /<mitsu-add-dependency packages="([^"]+)">[^<]*<\/mitsu-add-dependency>/g;
   let match;
   const packages: string[] = [];
   while ((match = dyadAddDependencyRegex.exec(fullResponse)) !== null) {
@@ -88,7 +88,7 @@ export function getDyadAddDependencyTags(fullResponse: string): string[] {
 
 export function getDyadChatSummaryTag(fullResponse: string): string | null {
   const dyadChatSummaryRegex =
-    /<dyad-chat-summary>([\s\S]*?)<\/dyad-chat-summary>/g;
+    /<mitsu-chat-summary>([\s\S]*?)<\/mitsu-chat-summary>/g;
   const match = dyadChatSummaryRegex.exec(fullResponse);
   if (match && match[1]) {
     return match[1].trim();
@@ -98,7 +98,7 @@ export function getDyadChatSummaryTag(fullResponse: string): string | null {
 
 export function getDyadExecuteSqlTags(fullResponse: string): SqlQuery[] {
   const dyadExecuteSqlRegex =
-    /<dyad-execute-sql([^>]*)>([\s\S]*?)<\/dyad-execute-sql>/g;
+    /<mitsu-execute-sql([^>]*)>([\s\S]*?)<\/mitsu-execute-sql>/g;
   const descriptionRegex = /description="([^"]+)"/;
   let match;
   const queries: { content: string; description?: string }[] = [];
@@ -127,7 +127,7 @@ export function getDyadExecuteSqlTags(fullResponse: string): SqlQuery[] {
 
 export function getDyadCommandTags(fullResponse: string): string[] {
   const dyadCommandRegex =
-    /<dyad-command type="([^"]+)"[^>]*><\/dyad-command>/g;
+    /<mitsu-command type="([^"]+)"[^>]*><\/mitsu-command>/g;
   let match;
   const commands: string[] = [];
 

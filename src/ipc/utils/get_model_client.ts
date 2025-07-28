@@ -87,7 +87,7 @@ export async function getModelClient(
             settings,
           })
         : createOpenAICompatible({
-            name: "dyad-gateway",
+            name: "mitsu-gateway",
             apiKey: dyadApiKey,
             baseURL: dyadGatewayUrl ?? "https://llm-gateway.dyad.sh/v1",
           });

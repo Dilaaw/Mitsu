@@ -8,7 +8,7 @@
 - text: Approved
 - paragraph: "[[UPLOAD_IMAGE_TO_CODEBASE]]"
 - paragraph: "Attachments:"
-- paragraph: "File to upload to codebase: logo.png (file id: DYAD_ATTACHMENT_0)"
+- paragraph: "File to upload to codebase: logo.png (file id: MITSU_ATTACHMENT_0)"
 - paragraph: Uploading image to codebase
 - img
 - text: file.png

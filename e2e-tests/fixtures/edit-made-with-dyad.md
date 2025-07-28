@@ -1,4 +1,4 @@
-<dyad-write path="src/components/made-with-dyad.tsx" description="write-description">
+<mitsu-write path="src/components/made-with-dyad.tsx" description="write-description">
 export const MadeWithDyad = () => {
   return (
     <div className="p-4 text-center">
@@ -13,4 +13,4 @@ export const MadeWithDyad = () => {
     </div>
   );
 };
-</dyad-write>
+</mitsu-write>

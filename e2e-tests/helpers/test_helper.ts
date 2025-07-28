@@ -1113,7 +1113,7 @@ function prettifyDump(
             // Depending on whether pnpm install is run, it will be modified,
             // and the contents and timestamp (thus affecting order) will be affected.
             .replace(
-              /\n<dyad-file path="package\.json">[\s\S]*?<\/dyad-file>\n/g,
+              /\n<mitsu-file path="package\.json">[\s\S]*?<\/mitsu-file>\n/g,
               "",
             );
       return `===\nrole: ${message.role}\nmessage: ${content}`;

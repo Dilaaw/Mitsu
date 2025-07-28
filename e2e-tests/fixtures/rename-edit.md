@@ -1,6 +1,6 @@
-<dyad-rename from="src/App.tsx" to="src/Renamed.tsx">
-</dyad-rename>
+<mitsu-rename from="src/App.tsx" to="src/Renamed.tsx">
+</mitsu-rename>
 
-<dyad-write path="src/Renamed.tsx">
+<mitsu-write path="src/Renamed.tsx">
 // newly added content to renamed file should exist
-</dyad-write>
+</mitsu-write>

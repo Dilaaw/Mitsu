@@ -67,7 +67,7 @@ const activeStreams = new Map<number, AbortController>();
 const partialResponses = new Map<number, string>();
 
 // Directory for storing temporary files
-const TEMP_DIR = path.join(os.tmpdir(), "dyad-attachments");
+const TEMP_DIR = path.join(os.tmpdir(), "mitsu-attachments");
 
 // Common helper functions
 const TEXT_FILE_EXTENSIONS = [
@@ -240,14 +240,14 @@ export function registerChatStreamHandlers() {
 
           if (attachment.attachmentType === "upload-to-codebase") {
             // For upload-to-codebase, create a unique file ID and store the mapping
-            const fileId = `DYAD_ATTACHMENT_${index}`;
+            const fileId = `MITSU_ATTACHMENT_${index}`;
 
             fileUploadsState.addFileUpload(fileId, {
               filePath,
               originalName: attachment.name,
             });
 
-            // Add instruction for AI to use dyad-write tag
+            // Add instruction for AI to use mitsu-write tag
             attachmentInfo += `\n\nFile to upload to codebase: ${attachment.name} (file id: ${fileId})\n`;
           } else {
             // For chat-context, use the existing logic
@@ -255,8 +255,8 @@ export function registerChatStreamHandlers() {
             // If it's a text-based file, try to include the content
             if (await isTextFile(filePath)) {
               try {
-                attachmentInfo += `<dyad-text-attachment filename="${attachment.name}" type="${attachment.type}" path="${filePath}">
-                </dyad-text-attachment>
+                attachmentInfo += `<mitsu-text-attachment filename="${attachment.name}" type="${attachment.type}" path="${filePath}">
+                </mitsu-text-attachment>
                 \n\n`;
               } catch (err) {
                 logger.error(`Error reading file content: ${err}`);
@@ -480,7 +480,7 @@ ${componentSnippet}
           );
         // If there's mixed attachments (e.g. some upload to codebase attachments and some upload images as chat context attachemnts)
         // we will just include the file upload system prompt, otherwise the AI gets confused and doesn't reliably
-        // print out the dyad-write tags.
+        // print out the mitsu-write tags.
         // Usually, AI models will want to use the image as reference to generate code (e.g. UI mockups) anyways, so
         // it's not that critical to include the image analysis instructions.
         if (hasUploadedAttachments) {
@@ -488,14 +488,14 @@ ${componentSnippet}
   
 When files are attached to this conversation, upload them to the codebase using this exact format:
 
-<dyad-write path="path/to/destination/filename.ext" description="Upload file to codebase">
-DYAD_ATTACHMENT_X
-</dyad-write>
+<mitsu-write path="path/to/destination/filename.ext" description="Upload file to codebase">
+MITSU_ATTACHMENT_X
+</mitsu-write>
 
-Example for file with id of DYAD_ATTACHMENT_0:
-<dyad-write path="src/components/Button.jsx" description="Upload file to codebase">
-DYAD_ATTACHMENT_0
-</dyad-write>
+Example for file with id of MITSU_ATTACHMENT_0:
+<mitsu-write path="src/components/Button.jsx" description="Upload file to codebase">
+MITSU_ATTACHMENT_0
+</mitsu-write>
 
   `;
         } else if (hasImageAttachments) {
@@ -586,10 +586,10 @@ This conversation includes one or more image attachments. When the user uploads 
             maxRetries: 2,
             model: modelClient.model,
             providerOptions: {
-              "dyad-engine": {
+              "mitsu-engine": {
                 dyadRequestId,
               },
-              "dyad-gateway": getExtraProviderOptions(
+              "mitsu-gateway": getExtraProviderOptions(
                 modelClient.builtinProviderId,
                 settings,
               ),
@@ -689,7 +689,7 @@ This conversation includes one or more image attachments. When the user uploads 
               !abortController.signal.aborted
             ) {
               logger.warn(
-                `Received unclosed dyad-write tag, attempting to continue, attempt #${continuationAttempts + 1}`,
+                `Received unclosed mitsu-write tag, attempting to continue, attempt #${continuationAttempts + 1}`,
               );
               continuationAttempts++;
 
@@ -741,14 +741,14 @@ This conversation includes one or more image attachments. When the user uploads 
                 autoFixAttempts < 2 &&
                 !abortController.signal.aborted
               ) {
-                fullResponse += `<dyad-problem-report summary="${problemReport.problems.length} problems">
+                fullResponse += `<mitsu-problem-report summary="${problemReport.problems.length} problems">
 ${problemReport.problems
   .map(
     (problem) =>
       `<problem file="${escapeXml(problem.file)}" line="${problem.line}" column="${problem.column}" code="${problem.code}">${escapeXml(problem.message)}</problem>`,
   )
   .join("\n")}
-</dyad-problem-report>`;
+</mitsu-problem-report>`;
 
                 logger.info(
                   `Attempting to auto-fix problems, attempt #${autoFixAttempts + 1}`,
@@ -876,9 +876,9 @@ ${problemReport.problems
 
       // Only save the response and process it if we weren't aborted
       if (!abortController.signal.aborted && fullResponse) {
-        // Scrape from: <dyad-chat-summary>Renaming profile file</dyad-chat-title>
+        // Scrape from: <mitsu-chat-summary>Renaming profile file</mitsu-chat-title>
         const chatTitle = fullResponse.match(
-          /<dyad-chat-summary>(.*?)<\/dyad-chat-summary>/,
+          /<mitsu-chat-summary>(.*?)<\/mitsu-chat-summary>/,
         );
         if (chatTitle) {
           await db
@@ -1048,7 +1048,7 @@ async function replaceTextAttachmentWithContent(
       // Replace the placeholder tag with the full content
       const escapedPath = filePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const tagPattern = new RegExp(
-        `<dyad-text-attachment filename="[^"]*" type="[^"]*" path="${escapedPath}">\\s*<\\/dyad-text-attachment>`,
+        `<mitsu-text-attachment filename="[^"]*" type="[^"]*" path="${escapedPath}">\\s*<\\/mitsu-text-attachment>`,
         "g",
       );
 
@@ -1141,18 +1141,18 @@ function removeThinkingTags(text: string): string {
 
 export function removeProblemReportTags(text: string): string {
   const problemReportRegex =
-    /<dyad-problem-report[^>]*>[\s\S]*?<\/dyad-problem-report>/g;
+    /<mitsu-problem-report[^>]*>[\s\S]*?<\/mitsu-problem-report>/g;
   return text.replace(problemReportRegex, "").trim();
 }
 
 export function removeDyadTags(text: string): string {
-  const dyadRegex = /<dyad-[^>]*>[\s\S]*?<\/dyad-[^>]*>/g;
+  const dyadRegex = /<mitsu-[^>]*>[\s\S]*?<\/mitsu-[^>]*>/g;
   return text.replace(dyadRegex, "").trim();
 }
 
 export function hasUnclosedDyadWrite(text: string): boolean {
-  // Find the last opening dyad-write tag
-  const openRegex = /<dyad-write[^>]*>/g;
+  // Find the last opening mitsu-write tag
+  const openRegex = /<mitsu-write[^>]*>/g;
   let lastOpenIndex = -1;
   let match;
 
@@ -1167,19 +1167,19 @@ export function hasUnclosedDyadWrite(text: string): boolean {
 
   // Look for a closing tag after the last opening tag
   const textAfterLastOpen = text.substring(lastOpenIndex);
-  const hasClosingTag = /<\/dyad-write>/.test(textAfterLastOpen);
+  const hasClosingTag = /<\/mitsu-write>/.test(textAfterLastOpen);
 
   return !hasClosingTag;
 }
 
 function escapeDyadTags(text: string): string {
-  // Escape dyad tags in reasoning content
+  // Escape mitsu tags in reasoning content
   // We are replacing the opening tag with a look-alike character
-  // to avoid issues where thinking content includes dyad tags
+  // to avoid issues where thinking content includes mitsu tags
   // and are mishandled by:
   // 1. FE markdown parser
   // 2. Main process response processor
-  return text.replace(/<dyad/g, "＜dyad").replace(/<\/dyad/g, "＜/dyad");
+  return text.replace(/<mitsu/g, "＜mitsu").replace(/<\/mitsu/g, "＜/mitsu");
 }
 
 const CODEBASE_PROMPT_PREFIX = "This is my codebase.";

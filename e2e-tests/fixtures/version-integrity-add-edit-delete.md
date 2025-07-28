@@ -1,10 +1,10 @@
 Deleting a file
 
-<dyad-delete path="to-be-deleted.txt"></dyad-delete>
-<dyad-write path="new-file.js" description="new file">
+<mitsu-delete path="to-be-deleted.txt"></mitsu-delete>
+<mitsu-write path="new-file.js" description="new file">
 new-file
 end of new-file
-</dyad-write>
-<dyad-write path="to-be-edited.txt" description="editing file">
+</mitsu-write>
+<mitsu-write path="to-be-edited.txt" description="editing file">
 after-edit
-</dyad-write>
+</mitsu-write>

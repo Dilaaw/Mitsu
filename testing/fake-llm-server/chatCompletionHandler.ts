@@ -36,9 +36,9 @@ export const createChatCompletionHandler =
       )
     ) {
       messageContent = `Uploading image to codebase
-<dyad-write path="new/image/file.png" description="Uploaded image to codebase">
-DYAD_ATTACHMENT_0
-</dyad-write>
+<mitsu-write path="new/image/file.png" description="Uploaded image to codebase">
+MITSU_ATTACHMENT_0
+</mitsu-write>
 `;
       messageContent += "\n\n" + generateDump(req);
     }
@@ -53,14 +53,14 @@ DYAD_ATTACHMENT_0
     ) {
       // Fix errors in create-ts-errors.md and introduce a new error
       messageContent = `
-<dyad-write path="src/bad-file.ts" description="Fix 2 errors and introduce a new error.">
+<mitsu-write path="src/bad-file.ts" description="Fix 2 errors and introduce a new error.">
 // Import doesn't exist
 // import NonExistentClass from 'non-existent-class';
 
 
 const x = new Object();
 x.nonExistentMethod2();
-</dyad-write>
+</mitsu-write>
 
       `;
     }
@@ -73,14 +73,14 @@ x.nonExistentMethod2();
     ) {
       // Fix errors in create-ts-errors.md and introduce a new error
       messageContent = `
-<dyad-write path="src/bad-file.ts" description="Fix remaining error.">
+<mitsu-write path="src/bad-file.ts" description="Fix remaining error.">
 // Import doesn't exist
 // import NonExistentClass from 'non-existent-class';
 
 
 const x = new Object();
 x.toString(); // replaced with existing method
-</dyad-write>
+</mitsu-write>
 
       `;
     }
@@ -99,7 +99,7 @@ x.toString(); // replaced with existing method
     ) {
       messageContent = `
       Fixing the error...
-      <dyad-write path="src/pages/Index.tsx">
+      <mitsu-write path="src/pages/Index.tsx">
       
 
 import { MadeWithDyad } from "@/components/made-with-dyad";
@@ -117,7 +117,7 @@ const Index = () => {
 
 export default Index;
 
-      </dyad-write>
+      </mitsu-write>
       `;
     }
     console.error("LASTMESSAGE", lastMessage);
@@ -178,7 +178,7 @@ export default Index;
       typeof lastMessage.content === "string" &&
       lastMessage.content.trim().endsWith("[[STRING_TO_BE_FINISHED]]")
     ) {
-      messageContent = `[[STRING_IS_FINISHED]]";</dyad-write>\nFinished writing file.`;
+      messageContent = `[[STRING_IS_FINISHED]]";</mitsu-write>\nFinished writing file.`;
       messageContent += "\n\n" + generateDump(req);
     }
 

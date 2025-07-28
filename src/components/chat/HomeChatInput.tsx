@@ -104,7 +104,7 @@ export function HomeChatInput({
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               onPaste={handlePaste}
-              placeholder="Ask Dyad to build..."
+              placeholder="Ask Mitsu to build..."
               className="flex-1 p-2 focus:outline-none overflow-y-auto min-h-[40px] max-h-[200px]"
               style={{ resize: "none" }}
               disabled={isStreaming} // Should ideally reflect if *any* stream is happening

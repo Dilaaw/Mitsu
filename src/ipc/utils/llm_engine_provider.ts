@@ -96,7 +96,7 @@ export function createDyadEngine(
   }
 
   const getCommonModelConfig = (): CommonModelConfig => ({
-    provider: `dyad-engine`,
+    provider: `mitsu-engine`,
     url: ({ path }) => {
       const url = new URL(`${baseURL}${path}`);
       if (options.queryParams) {

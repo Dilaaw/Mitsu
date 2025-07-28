@@ -313,7 +313,7 @@ export function ChatInput({ chatId }: { chatId?: number }) {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               onPaste={handlePaste}
-              placeholder="Ask Dyad to build..."
+              placeholder="Ask Mitsu to build..."
               className="flex-1 p-2 focus:outline-none overflow-y-auto min-h-[40px] max-h-[200px]"
               style={{ resize: "none" }}
             />
@@ -471,7 +471,7 @@ function WriteCodeProperlyButton() {
       return;
     }
     streamMessage({
-      prompt: `Write the code in the previous message in the correct format using \`<dyad-write>\` tags!`,
+      prompt: `Write the code in the previous message in the correct format using \`<mitsu-write>\` tags!`,
       chatId,
       redo: false,
     });
