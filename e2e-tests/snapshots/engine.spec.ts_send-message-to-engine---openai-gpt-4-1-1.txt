@@ -18,7 +18,7 @@
       "files": [
         {
           "path": ".gitignore",
-          "content": "// File contents excluded from context",
+          "content": "# Logs\nlogs\n*.log\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*\npnpm-debug.log*\nlerna-debug.log*\n\nnode_modules\ndist\ndist-ssr\n*.local\n\n# Editor directories and files\n.vscode/*\n!.vscode/extensions.json\n.idea\n.DS_Store\n*.suo\n*.ntvs*\n*.njsproj\n*.sln\n*.sw?\n",
           "force": false
         },
         {
@@ -394,6 +394,11 @@
         {
           "path": "tsconfig.node.json",
           "content": "// File contents excluded from context",
+          "force": false
+        },
+        {
+          "path": "vercel.json",
+          "content": "{\n  \"$schema\": \"https://openapi.vercel.sh/vercel.json\",\n  \"rewrites\": [\n    {\n      \"source\": \"/(.*)\",\n      \"destination\": \"/index.html\"\n    }\n  ]\n}\n",
           "force": false
         },
         {

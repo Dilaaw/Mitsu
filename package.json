@@ -1,7 +1,7 @@
 {
   "name": "dyad",
   "productName": "dyad",
-  "version": "0.15.0-beta.1",
+  "version": "0.15.0",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "repository": {
@@ -76,7 +76,7 @@
     "happy-dom": "^17.4.4",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
-    "oxlint": "^0.16.9",
+    "oxlint": "^1.8.0",
     "prettier": "3.5.3",
     "typescript": "^5.8.3",
     "vite": "^5.4.17",

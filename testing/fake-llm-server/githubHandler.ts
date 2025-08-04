@@ -338,7 +338,8 @@ export function handleGitPush(req: Request, res: Response, next?: Function) {
           lines.forEach((line) => {
             // Look for lines containing refs/heads/
             const refMatch = line.match(
-              /([0-9a-f]{40})\s+([0-9a-f]{40})\s+refs\/heads\/([^\s]+)/,
+              // eslint-disable-next-line
+              /([0-9a-f]{40})\s+([0-9a-f]{40})\s+refs\/heads\/([^\s\u0000]+)/,
             );
             if (refMatch) {
               const [, oldSha, newSha, branchName] = refMatch;
