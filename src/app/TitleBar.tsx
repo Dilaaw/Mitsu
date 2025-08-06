@@ -20,10 +20,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, Check } from "lucide-react";
 import { PreviewHeader } from "@/components/preview_panel/PreviewHeader";
 
 export const TitleBar = () => {
-  const [selectedAppId] = useAtom(selectedAppIdAtom);
+  const [selectedAppId, setSelectedAppId] = useAtom(selectedAppIdAtom);
   const { apps } = useLoadApps();
   const { navigate } = useRouter();
   const location = useLocation();
@@ -62,14 +69,14 @@ export const TitleBar = () => {
 
   // Get selected app name
   const selectedApp = apps.find((app) => app.id === selectedAppId);
-  const displayText = selectedApp
-    ? `App: ${selectedApp.name}`
-    : "(no app selected)";
+  const displayText = selectedApp ? selectedApp.name : "No app selected";
 
-  const handleAppClick = () => {
-    if (selectedApp) {
-      navigate({ to: "/app-details", search: { appId: selectedApp.id } });
-    }
+  const handleAppSelect = (appId: number) => {
+    setSelectedAppId(appId);
+    // Navigate to chat page
+    navigate({
+      to: "/chat",
+    });
   };
 
   const isDyadPro = !!settings?.providerSettings?.auto?.apiKey?.value;
@@ -81,17 +88,84 @@ export const TitleBar = () => {
         <div className={`${showWindowControls ? "pl-2" : "pl-18"}`}></div>
 
         <img src={logo} alt="Dyad Logo" className="w-6 h-6 mr-0.5" />
-        <Button
-          data-testid="title-bar-app-name-button"
-          variant="outline"
-          size="sm"
-          className={`hidden @2xl:block no-app-region-drag text-xs max-w-38 truncate font-medium ${
-            selectedApp ? "cursor-pointer" : ""
-          }`}
-          onClick={handleAppClick}
-        >
-          {displayText}
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              data-testid="title-bar-app-name-button"
+              variant="ghost"
+              size="sm"
+              className="hidden @2xl:flex no-app-region-drag text-xs max-w-48 truncate font-medium items-center gap-1.5 px-2.5 py-1 h-7 hover:bg-accent/50 transition-colors border border-transparent hover:border-accent/30"
+            >
+              <span className="truncate">{displayText}</span>
+              <ChevronDown size={10} className="opacity-60 flex-shrink-0" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="w-64 max-h-80 overflow-hidden"
+          >
+            <div className="px-3 py-2 text-xs font-medium text-muted-foreground border-b">
+              Select Application
+            </div>
+            <div className="max-h-64 overflow-y-auto">
+              {apps.length === 0 ? (
+                <div className="px-3 py-6 text-center">
+                  <div className="text-sm text-muted-foreground">
+                    No applications available
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Create your first app to get started
+                  </div>
+                </div>
+              ) : (
+                <div className="p-1">
+                  {apps
+                    .sort((a, b) => {
+                      // Put selected app first, then sort others alphabetically
+                      if (a.id === selectedAppId) return -1;
+                      if (b.id === selectedAppId) return 1;
+                      return a.name.localeCompare(b.name);
+                    })
+                    .map((app) => (
+                      <DropdownMenuItem
+                        key={app.id}
+                        onClick={() => handleAppSelect(app.id)}
+                        className={cn(
+                          "px-3 py-2.5 cursor-pointer rounded-md transition-colors",
+                          selectedAppId === app.id
+                            ? "bg-accent/80 text-accent-foreground"
+                            : "hover:bg-accent/50",
+                        )}
+                      >
+                        <div className="flex items-center gap-3 min-w-0 w-full">
+                          <div className="flex items-center justify-center w-5 h-5 flex-shrink-0">
+                            {selectedAppId === app.id ? (
+                              <Check
+                                size={12}
+                                className="text-accent-foreground"
+                              />
+                            ) : (
+                              <div className="w-2 h-2 rounded-full bg-muted-foreground/40" />
+                            )}
+                          </div>
+                          <span className="truncate text-sm font-medium flex-1">
+                            {app.name}
+                          </span>
+                          {selectedAppId === app.id && (
+                            <div className="flex-shrink-0">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-accent-foreground/10 text-accent-foreground">
+                                Current
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                </div>
+              )}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {isDyadPro && <DyadProButton isDyadProEnabled={isDyadProEnabled} />}
 
         {/* Preview Header */}
