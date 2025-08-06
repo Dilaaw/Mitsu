@@ -26,7 +26,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { PreviewHeader } from "@/components/preview_panel/PreviewHeader";
 
 export const TitleBar = () => {
@@ -94,7 +94,12 @@ export const TitleBar = () => {
               data-testid="title-bar-app-name-button"
               variant="ghost"
               size="sm"
-              className="hidden @2xl:flex no-app-region-drag text-xs max-w-48 truncate font-medium items-center gap-1.5 px-2.5 py-1 h-7 hover:bg-accent/50 transition-colors border border-transparent hover:border-accent/30"
+              className={cn(
+                "hidden @2xl:flex no-app-region-drag text-xs max-w-48 truncate font-medium items-center gap-1.5 px-2.5 py-1 h-7 transition-colors rounded-md border",
+                selectedApp
+                  ? "bg-muted/50 border-border hover:bg-muted"
+                  : "border-transparent hover:bg-muted/50",
+              )}
             >
               <span className="truncate">{displayText}</span>
               <ChevronDown size={10} className="opacity-60 flex-shrink-0" />
@@ -102,23 +107,23 @@ export const TitleBar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
-            className="w-64 max-h-80 overflow-hidden"
+            className="w-56 max-h-72 overflow-hidden bg-popover border shadow-lg"
           >
-            <div className="px-3 py-2 text-xs font-medium text-muted-foreground border-b">
-              Select Application
+            <div className="px-3 py-2 text-xs font-medium text-muted-foreground/80 border-b border-border/50">
+              Applications
             </div>
-            <div className="max-h-64 overflow-y-auto">
+            <div className="max-h-60 overflow-y-auto py-1">
               {apps.length === 0 ? (
-                <div className="px-3 py-6 text-center">
+                <div className="px-3 py-8 text-center">
                   <div className="text-sm text-muted-foreground">
                     No applications available
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-xs text-muted-foreground/70 mt-1">
                     Create your first app to get started
                   </div>
                 </div>
               ) : (
-                <div className="p-1">
+                <>
                   {apps
                     .sort((a, b) => {
                       // Put selected app first, then sort others alphabetically
@@ -126,42 +131,35 @@ export const TitleBar = () => {
                       if (b.id === selectedAppId) return 1;
                       return a.name.localeCompare(b.name);
                     })
-                    .map((app) => (
-                      <DropdownMenuItem
-                        key={app.id}
-                        onClick={() => handleAppSelect(app.id)}
-                        className={cn(
-                          "px-3 py-2.5 cursor-pointer rounded-md transition-colors",
-                          selectedAppId === app.id
-                            ? "bg-accent/80 text-accent-foreground"
-                            : "hover:bg-accent/50",
-                        )}
-                      >
-                        <div className="flex items-center gap-3 min-w-0 w-full">
-                          <div className="flex items-center justify-center w-5 h-5 flex-shrink-0">
-                            {selectedAppId === app.id ? (
-                              <Check
-                                size={12}
-                                className="text-accent-foreground"
-                              />
-                            ) : (
-                              <div className="w-2 h-2 rounded-full bg-muted-foreground/40" />
-                            )}
-                          </div>
-                          <span className="truncate text-sm font-medium flex-1">
-                            {app.name}
-                          </span>
-                          {selectedAppId === app.id && (
-                            <div className="flex-shrink-0">
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-accent-foreground/10 text-accent-foreground">
+                    .map((app, index) => (
+                      <div key={app.id}>
+                        <DropdownMenuItem
+                          onClick={() => handleAppSelect(app.id)}
+                          className={cn(
+                            "mx-1 px-2 py-2 cursor-pointer rounded-sm transition-all duration-150",
+                            selectedAppId === app.id
+                              ? "bg-accent text-accent-foreground"
+                              : "hover:bg-accent/60",
+                          )}
+                        >
+                          <div className="flex items-center justify-between w-full min-w-0">
+                            <span className="truncate text-sm flex-1">
+                              {app.name}
+                            </span>
+                            {selectedAppId === app.id && (
+                              <span className="ml-2 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary flex-shrink-0">
                                 Current
                               </span>
-                            </div>
+                            )}
+                          </div>
+                        </DropdownMenuItem>
+                        {selectedAppId === app.id &&
+                          index < apps.length - 1 && (
+                            <div className="mx-3 my-1 h-px bg-border/30" />
                           )}
-                        </div>
-                      </DropdownMenuItem>
+                      </div>
                     ))}
-                </div>
+                </>
               )}
             </div>
           </DropdownMenuContent>
