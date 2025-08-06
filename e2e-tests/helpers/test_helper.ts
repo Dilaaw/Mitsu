@@ -47,6 +47,18 @@ export class ContextFilesPickerDialog {
       .first()
       .click();
   }
+
+  async addExcludeContextFile(path: string) {
+    await this.page.getByTestId("exclude-context-files-input").fill(path);
+    await this.page.getByTestId("exclude-context-files-add-button").click();
+  }
+
+  async removeExcludeContextFile() {
+    await this.page
+      .getByTestId("exclude-context-files-remove-button")
+      .first()
+      .click();
+  }
 }
 
 class ProModesDialog {
@@ -481,11 +493,11 @@ export class PageObject {
   }
 
   locateLoadingAppPreview() {
-    return this.page.getByText("Loading app preview...");
+    return this.page.getByText("Preparing app preview...");
   }
 
   locateStartingAppPreview() {
-    return this.page.getByText("Starting up your app...");
+    return this.page.getByText("Starting your app server...");
   }
 
   getPreviewIframeElement() {

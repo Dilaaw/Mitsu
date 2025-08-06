@@ -57,16 +57,20 @@ const EXCLUDED_FILES = ["pnpm-lock.yaml", "package-lock.json"];
 // Files to always include, regardless of extension
 const ALWAYS_INCLUDE_FILES = ["package.json", "vercel.json", ".gitignore"];
 
+// File patterns to always omit (contents will be replaced with a placeholder)
+// We don't want to send environment variables to the LLM because they
+// are sensitive and users should be configuring them via the UI.
+const ALWAYS_OMITTED_FILES = [".env", ".env.local"];
+
 // File patterns to omit (contents will be replaced with a placeholder)
 //
 // Why are we not using path.join here?
 // Because we have already normalized the path to use /.
 const OMITTED_FILES = [
+  ...ALWAYS_OMITTED_FILES,
   "src/components/ui",
   "eslint.config",
   "tsconfig.json",
-
-  ".env",
 ];
 
 // Maximum file size to include (in bytes) - 1MB
@@ -306,11 +310,6 @@ async function collectFiles(dir: string, baseDir: string): Promise<string[]> {
   return files;
 }
 
-// Skip large configuration files or generated code (just include the path)
-function isOmittedFile(relativePath: string): boolean {
-  return OMITTED_FILES.some((pattern) => relativePath.includes(pattern));
-}
-
 const OMITTED_FILE_CONTENT = "// File contents excluded from context";
 
 /**
@@ -327,7 +326,34 @@ function shouldReadFileContents({
   const fileName = path.basename(filePath);
 
   // OMITTED_FILES takes precedence - never read if omitted
-  if (isOmittedFile(normalizedRelativePath)) {
+  if (
+    OMITTED_FILES.some((pattern) => normalizedRelativePath.includes(pattern))
+  ) {
+    return false;
+  }
+
+  // Check if file should be included based on extension or filename
+  return (
+    ALLOWED_EXTENSIONS.includes(ext) || ALWAYS_INCLUDE_FILES.includes(fileName)
+  );
+}
+
+function shouldReadFileContentsForSmartContext({
+  filePath,
+  normalizedRelativePath,
+}: {
+  filePath: string;
+  normalizedRelativePath: string;
+}): boolean {
+  const ext = path.extname(filePath).toLowerCase();
+  const fileName = path.basename(filePath);
+
+  // ALWAYS__OMITTED_FILES takes precedence - never read if omitted
+  if (
+    ALWAYS_OMITTED_FILES.some((pattern) =>
+      normalizedRelativePath.includes(pattern),
+    )
+  ) {
     return false;
   }
 
@@ -446,9 +472,10 @@ export async function extractCodebase({
   }
 
   // Collect files from contextPaths and smartContextAutoIncludes
-  const { contextPaths, smartContextAutoIncludes } = chatContext;
+  const { contextPaths, smartContextAutoIncludes, excludePaths } = chatContext;
   const includedFiles = new Set<string>();
   const autoIncludedFiles = new Set<string>();
+  const excludedFiles = new Set<string>();
 
   // Add files from contextPaths
   if (contextPaths && contextPaths.length > 0) {
@@ -483,6 +510,7 @@ export async function extractCodebase({
       const matches = await glob(pattern, {
         nodir: true,
         absolute: true,
+        ignore: "**/node_modules/**",
       });
       matches.forEach((file) => {
         const normalizedFile = path.normalize(file);
@@ -492,10 +520,34 @@ export async function extractCodebase({
     }
   }
 
+  // Add files from excludePaths
+  if (excludePaths && excludePaths.length > 0) {
+    for (const p of excludePaths) {
+      const pattern = createFullGlobPath({
+        appPath,
+        globPath: p.globPath,
+      });
+      const matches = await glob(pattern, {
+        nodir: true,
+        absolute: true,
+        ignore: "**/node_modules/**",
+      });
+      matches.forEach((file) => {
+        const normalizedFile = path.normalize(file);
+        excludedFiles.add(normalizedFile);
+      });
+    }
+  }
+
   // Only filter files if contextPaths are provided
   // If only smartContextAutoIncludes are provided, keep all files and just mark auto-includes as forced
   if (contextPaths && contextPaths.length > 0) {
     files = files.filter((file) => includedFiles.has(path.normalize(file)));
+  }
+
+  // Filter out excluded files (this takes precedence over include paths)
+  if (excludedFiles.size > 0) {
+    files = files.filter((file) => !excludedFiles.has(path.normalize(file)));
   }
 
   // Sort files by modification time (oldest first)
@@ -517,11 +569,18 @@ export async function extractCodebase({
       virtualFileSystem,
     });
 
-    const isForced = autoIncludedFiles.has(path.normalize(file));
+    const isForced =
+      autoIncludedFiles.has(path.normalize(file)) &&
+      !excludedFiles.has(path.normalize(file));
 
     // Determine file content based on whether we should read it
     let fileContent: string;
-    if (!shouldReadFileContents({ filePath: file, normalizedRelativePath })) {
+    if (
+      !shouldReadFileContentsForSmartContext({
+        filePath: file,
+        normalizedRelativePath,
+      })
+    ) {
       fileContent = OMITTED_FILE_CONTENT;
     } else {
       const readContent = await readFileWithCache(file, virtualFileSystem);

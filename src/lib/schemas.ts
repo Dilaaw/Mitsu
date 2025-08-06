@@ -91,6 +91,14 @@ export const SupabaseSchema = z.object({
 });
 export type Supabase = z.infer<typeof SupabaseSchema>;
 
+export const NeonSchema = z.object({
+  accessToken: SecretSchema.optional(),
+  refreshToken: SecretSchema.optional(),
+  expiresIn: z.number().optional(),
+  tokenTimestamp: z.number().optional(),
+});
+export type Neon = z.infer<typeof NeonSchema>;
+
 export const ExperimentsSchema = z.object({
   // Deprecated
   enableSupabaseIntegration: z.boolean().describe("DEPRECATED").optional(),
@@ -113,6 +121,7 @@ export type GlobPath = z.infer<typeof GlobPathSchema>;
 export const AppChatContextSchema = z.object({
   contextPaths: z.array(GlobPathSchema),
   smartContextAutoIncludes: z.array(GlobPathSchema),
+  excludePaths: z.array(GlobPathSchema).optional(),
 });
 export type AppChatContext = z.infer<typeof AppChatContextSchema>;
 
@@ -124,6 +133,7 @@ export type ContextPathResult = GlobPath & {
 export type ContextPathResults = {
   contextPaths: ContextPathResult[];
   smartContextAutoIncludes: ContextPathResult[];
+  excludePaths: ContextPathResult[];
 };
 
 export const ReleaseChannelSchema = z.enum(["stable", "beta"]);
@@ -139,6 +149,7 @@ export const UserSettingsSchema = z.object({
   githubAccessToken: SecretSchema.optional(),
   vercelAccessToken: SecretSchema.optional(),
   supabase: SupabaseSchema.optional(),
+  neon: NeonSchema.optional(),
   autoApproveChanges: z.boolean().optional(),
   telemetryConsent: z.enum(["opted_in", "opted_out", "unset"]).optional(),
   telemetryUserId: z.string().optional(),
