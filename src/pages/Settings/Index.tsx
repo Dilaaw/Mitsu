@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { AutoFixProblemsSwitch } from "@/components/AutoFixProblemsSwitch";
 import { AutoUpdateSwitch } from "@/components/AutoUpdateSwitch";
 import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
+import { ResponseNotificationsSwitch } from "@/components/ResponseNotificationsSwitch";
 import { NeonIntegration } from "@/components/NeonIntegration";
 
 export default function SettingsIndex() {
@@ -287,6 +288,13 @@ export function WorkflowSettings() {
         <AutoFixProblemsSwitch />
         <div className="text-sm text-gray-500 dark:text-gray-400">
           This will automatically fix TypeScript errors.
+        </div>
+      </div>
+
+      <div className="space-y-1 mt-4">
+        <ResponseNotificationsSwitch showToast={false} />
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          Show visual and audio notifications when chat responses are completed.
         </div>
       </div>
     </div>
