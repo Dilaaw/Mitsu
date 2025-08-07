@@ -9,7 +9,7 @@ import logo from "../../assets/logo_transparent.png";
 import { providerSettingsRoute } from "@/routes/settings/providers/$provider";
 import { cn } from "@/lib/utils";
 import { useDeepLink } from "@/contexts/DeepLinkContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { DyadProSuccessDialog } from "@/components/DyadProSuccessDialog";
 import { useTheme } from "@/contexts/ThemeContext";
 import { IpcClient } from "@/ipc/ipc_client";
@@ -38,6 +38,37 @@ export const TitleBar = () => {
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
   const [showWindowControls, setShowWindowControls] = useState(false);
 
+  // Memoized computation for selected app
+  const selectedApp = useMemo(() => {
+    return apps.find((app) => app.id === selectedAppId);
+  }, [apps, selectedAppId]);
+
+  // Memoized computation for display text
+  const displayText = useMemo(() => {
+    return selectedApp ? selectedApp.name : "No app selected";
+  }, [selectedApp]);
+
+  // Memoized computation for dropdown apps sorting
+  const sortedAppsForDropdown = useMemo(() => {
+    return [...apps].sort((a, b) => {
+      // Put selected app first
+      if (a.id === selectedAppId) return -1;
+      if (b.id === selectedAppId) return 1;
+
+      // Sort others by creation date (most recent first)
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
+  }, [apps, selectedAppId]);
+
+  // Memoized computation for DyadPro status
+  const { isDyadPro, isDyadProEnabled } = useMemo(() => {
+    const isDyadPro = !!settings?.providerSettings?.auto?.apiKey?.value;
+    const isDyadProEnabled = Boolean(settings?.enableDyadPro);
+    return { isDyadPro, isDyadProEnabled };
+  }, [settings]);
+
   useEffect(() => {
     // Check if we're running on Windows
     const checkPlatform = async () => {
@@ -65,11 +96,7 @@ export const TitleBar = () => {
       }
     };
     handleDeepLink();
-  }, [lastDeepLink]);
-
-  // Get selected app name
-  const selectedApp = apps.find((app) => app.id === selectedAppId);
-  const displayText = selectedApp ? selectedApp.name : "No app selected";
+  }, [lastDeepLink, refreshSettings]);
 
   const handleAppSelect = (appId: number) => {
     setSelectedAppId(appId);
@@ -78,9 +105,6 @@ export const TitleBar = () => {
       to: "/chat",
     });
   };
-
-  const isDyadPro = !!settings?.providerSettings?.auto?.apiKey?.value;
-  const isDyadProEnabled = Boolean(settings?.enableDyadPro);
 
   return (
     <>
@@ -124,41 +148,34 @@ export const TitleBar = () => {
                 </div>
               ) : (
                 <>
-                  {apps
-                    .sort((a, b) => {
-                      // Put selected app first, then sort others alphabetically
-                      if (a.id === selectedAppId) return -1;
-                      if (b.id === selectedAppId) return 1;
-                      return a.name.localeCompare(b.name);
-                    })
-                    .map((app, index) => (
-                      <div key={app.id}>
-                        <DropdownMenuItem
-                          onClick={() => handleAppSelect(app.id)}
-                          className={cn(
-                            "mx-1 px-2 py-2 cursor-pointer rounded-sm transition-all duration-150",
-                            selectedAppId === app.id
-                              ? "bg-accent text-accent-foreground"
-                              : "hover:bg-accent/60",
-                          )}
-                        >
-                          <div className="flex items-center justify-between w-full min-w-0">
-                            <span className="truncate text-sm flex-1">
-                              {app.name}
+                  {sortedAppsForDropdown.map((app, index) => (
+                    <div key={app.id}>
+                      <DropdownMenuItem
+                        onClick={() => handleAppSelect(app.id)}
+                        className={cn(
+                          "mx-1 px-2 py-2 cursor-pointer rounded-sm transition-all duration-150",
+                          selectedAppId === app.id
+                            ? "bg-accent text-accent-foreground"
+                            : "hover:bg-accent/60",
+                        )}
+                      >
+                        <div className="flex items-center justify-between w-full min-w-0">
+                          <span className="truncate text-sm flex-1">
+                            {app.name}
+                          </span>
+                          {selectedAppId === app.id && (
+                            <span className="ml-2 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary flex-shrink-0">
+                              Current
                             </span>
-                            {selectedAppId === app.id && (
-                              <span className="ml-2 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary flex-shrink-0">
-                                Current
-                              </span>
-                            )}
-                          </div>
-                        </DropdownMenuItem>
-                        {selectedAppId === app.id &&
-                          index < apps.length - 1 && (
-                            <div className="mx-3 my-1 h-px bg-border/30" />
                           )}
-                      </div>
-                    ))}
+                        </div>
+                      </DropdownMenuItem>
+                      {selectedAppId === app.id &&
+                        index < sortedAppsForDropdown.length - 1 && (
+                          <div className="mx-3 my-1 h-px bg-border/30" />
+                        )}
+                    </div>
+                  ))}
                 </>
               )}
             </div>
