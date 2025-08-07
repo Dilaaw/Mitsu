@@ -43,11 +43,6 @@ export const TitleBar = () => {
     return apps.find((app) => app.id === selectedAppId);
   }, [apps, selectedAppId]);
 
-  // Memoized computation for display text
-  const displayText = useMemo(() => {
-    return selectedApp ? selectedApp.name : "No app selected";
-  }, [selectedApp]);
-
   // Memoized computation for dropdown apps sorting
   const sortedAppsForDropdown = useMemo(() => {
     return [...apps].sort((a, b) => {
@@ -62,12 +57,10 @@ export const TitleBar = () => {
     });
   }, [apps, selectedAppId]);
 
-  // Memoized computation for DyadPro status
-  const { isDyadPro, isDyadProEnabled } = useMemo(() => {
-    const isDyadPro = !!settings?.providerSettings?.auto?.apiKey?.value;
-    const isDyadProEnabled = Boolean(settings?.enableDyadPro);
-    return { isDyadPro, isDyadProEnabled };
-  }, [settings]);
+  // Simple calculations - no need for useMemo
+  const displayText = selectedApp ? selectedApp.name : "No app selected";
+  const isDyadPro = !!settings?.providerSettings?.auto?.apiKey?.value;
+  const isDyadProEnabled = Boolean(settings?.enableDyadPro);
 
   useEffect(() => {
     // Check if we're running on Windows
