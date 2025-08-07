@@ -117,7 +117,7 @@ export function registerImportHandlers() {
         // Create initial commit
         await gitCommit({
           path: destPath,
-          message: "Init Dyad app",
+          message: "Init Mitsu app",
         });
       }
 

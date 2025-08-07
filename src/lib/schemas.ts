@@ -171,6 +171,12 @@ export const UserSettingsSchema = z.object({
   enableAutoUpdate: z.boolean(),
   releaseChannel: ReleaseChannelSchema,
   enableResponseCompletedNotifications: z.boolean().optional(),
+  commitPrefix: z
+    .object({
+      enabled: z.boolean(),
+      prefix: z.string(),
+    })
+    .optional(),
 
   ////////////////////////////////
   // E2E TESTING ONLY.

@@ -19,6 +19,7 @@ import { UserSettings } from "../../lib/schemas";
 import { gitCommit } from "../utils/git_utils";
 import { readSettings } from "@/main/settings";
 import { writeMigrationFile } from "../utils/file_utils";
+import { formatCommitMessage } from "../utils/commit_utils";
 import {
   getDyadWriteTags,
   getDyadRenameTags,
@@ -402,8 +403,12 @@ export async function processFullResponseActions(
         changes.push(`executed ${dyadExecuteSqlQueries.length} SQL queries`);
 
       let message = chatSummary
-        ? `[dyad] ${chatSummary} - ${changes.join(", ")}`
-        : `[dyad] ${changes.join(", ")}`;
+        ? `${chatSummary} - ${changes.join(", ")}`
+        : `${changes.join(", ")}`;
+
+      // Format the commit message with the configured prefix
+      message = formatCommitMessage(message);
+
       // Use chat summary, if provided, or default for commit message
       let commitHash = await gitCommit({
         path: appPath,

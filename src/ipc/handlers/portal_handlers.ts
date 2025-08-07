@@ -8,6 +8,7 @@ import { spawn } from "child_process";
 import fs from "node:fs";
 import git from "isomorphic-git";
 import { gitCommit } from "../utils/git_utils";
+import { formatCommitMessage } from "../utils/commit_utils";
 import { storeDbTimestampAtCurrentVersion } from "../utils/neon_timestamp_utils";
 
 const logger = log.scope("portal_handlers");
@@ -124,7 +125,7 @@ export function registerPortalHandlers() {
 
         const commitHash = await gitCommit({
           path: appPath,
-          message: "[dyad] Generate database migration file",
+          message: formatCommitMessage("Generate database migration file"),
         });
 
         logger.info(`Successfully committed migration changes: ${commitHash}`);

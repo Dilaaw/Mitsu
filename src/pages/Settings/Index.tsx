@@ -24,6 +24,7 @@ import { AutoUpdateSwitch } from "@/components/AutoUpdateSwitch";
 import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
 import { ResponseNotificationsSwitch } from "@/components/ResponseNotificationsSwitch";
 import { NeonIntegration } from "@/components/NeonIntegration";
+import { CommitPrefixSettings } from "@/components/settings/CommitPrefixSettings";
 
 export default function SettingsIndex() {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
@@ -268,6 +269,10 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
 }
 
 export function WorkflowSettings() {
+  const { settings } = useSettings();
+  const commitPrefixEnabled = settings?.commitPrefix?.enabled ?? true;
+  const commitPrefix = settings?.commitPrefix?.prefix || "[mitsu]";
+
   return (
     <div
       id="workflow-settings"
@@ -295,6 +300,23 @@ export function WorkflowSettings() {
         <ResponseNotificationsSwitch showToast={false} />
         <div className="text-sm text-gray-500 dark:text-gray-400">
           Show visual and audio notifications when chat responses are completed.
+        </div>
+      </div>
+
+      <div className="space-y-1 mt-4">
+        <CommitPrefixSettings />
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          {commitPrefixEnabled ? (
+            <>
+              Add{" "}
+              <code className="text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded font-mono">
+                {commitPrefix}
+              </code>{" "}
+              prefix to commits made by Mitsu for better traceability.
+            </>
+          ) : (
+            "Add a custom prefix to commits made by Mitsu for better traceability."
+          )}
         </div>
       </div>
     </div>

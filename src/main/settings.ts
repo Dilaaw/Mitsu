@@ -28,6 +28,10 @@ const DEFAULT_SETTINGS: UserSettings = {
   enableAutoUpdate: true,
   releaseChannel: "stable",
   selectedTemplateId: DEFAULT_TEMPLATE_ID,
+  commitPrefix: {
+    enabled: true,
+    prefix: "[mitsu]",
+  },
 };
 
 const SETTINGS_FILE = "user-settings.json";
