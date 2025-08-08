@@ -176,7 +176,7 @@ export function ChatPanel({
                   type="button"
                   size="icon"
                   variant="secondary"
-                  className="pointer-events-auto h-9 w-9 rounded-full shadow-md border bg-background/80 hover:bg-background"
+                  className="pointer-events-auto h-9 w-9 rounded-full shadow-md border bg-background/80 hover:bg-background cursor-pointer"
                   aria-label="Scroll to bottom"
                   onClick={() => {
                     scrollToBottom("smooth");
