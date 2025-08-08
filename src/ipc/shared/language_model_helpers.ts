@@ -42,7 +42,7 @@ export const MODEL_OPTIONS: Record<string, ModelOption[]> = {
     {
       name: "gpt-5-nano",
       displayName: "GPT 5 Nano",
-      description: "OpenAI's lightweight, but intelligent model",
+      description: "Fastest, most cost-efficient version of GPT-5",
       maxOutputTokens: 128_000,
       contextWindow: 400_000,
     },
