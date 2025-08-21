@@ -67,6 +67,7 @@ export interface Message {
   approvalState?: "approved" | "rejected" | null;
   commitHash?: string | null;
   dbTimestamp?: string | null;
+  createdAt?: Date | string;
 }
 
 export interface Chat {
@@ -96,6 +97,8 @@ export interface App {
   vercelProjectName: string | null;
   vercelTeamSlug: string | null;
   vercelDeploymentUrl: string | null;
+  installCommand: string | null;
+  startCommand: string | null;
 }
 
 export interface Version {
@@ -152,6 +155,7 @@ export interface TokenCountResult {
   totalTokens: number;
   messageHistoryTokens: number;
   codebaseTokens: number;
+  mentionedAppsTokens: number;
   inputTokens: number;
   systemPromptTokens: number;
   contextWindow: number;
@@ -225,6 +229,8 @@ export interface ApproveProposalResult {
 export interface ImportAppParams {
   path: string;
   appName: string;
+  installCommand?: string;
+  startCommand?: string;
 }
 
 export interface CopyAppParams {
@@ -348,6 +354,26 @@ export interface UploadFileToCodebaseResult {
   filePath: string;
 }
 
+// --- Prompts ---
+export interface PromptDto {
+  id: number;
+  title: string;
+  description: string | null;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CreatePromptParamsDto {
+  title: string;
+  description?: string;
+  content: string;
+}
+
+export interface UpdatePromptParamsDto extends CreatePromptParamsDto {
+  id: number;
+}
+
 export interface FileAttachment {
   file: File;
   type: "upload-to-codebase" | "chat-context";
@@ -394,3 +420,30 @@ export interface RevertVersionParams {
 export type RevertVersionResponse =
   | { successMessage: string }
   | { warningMessage: string };
+
+// --- Help Bot Types ---
+export interface StartHelpChatParams {
+  sessionId: string;
+  message: string;
+}
+
+export interface HelpChatResponseChunk {
+  sessionId: string;
+  delta: string;
+  type: "text";
+}
+
+export interface HelpChatResponseReasoning {
+  sessionId: string;
+  delta: string;
+  type: "reasoning";
+}
+
+export interface HelpChatResponseEnd {
+  sessionId: string;
+}
+
+export interface HelpChatResponseError {
+  sessionId: string;
+  error: string;
+}

@@ -17,6 +17,8 @@ import { estimateTokens, getContextWindow } from "../utils/token_utils";
 import { createLoggedHandler } from "./safe_handle";
 import { validateChatContext } from "../utils/context_paths_utils";
 import { readSettings } from "@/main/settings";
+import { extractMentionedAppsCodebases } from "../utils/mention_apps";
+import { parseAppMentions } from "@/shared/parse_mention_apps";
 
 const logger = log.scope("token_count_handlers");
 
@@ -51,6 +53,10 @@ export function registerTokenCountHandlers() {
 
       const settings = readSettings();
       const { buildPrompt, askPrompt, aiRules } = getPrompts();
+
+      // Parse app mentions from the input
+      const mentionedAppNames = parseAppMentions(req.input);
+
       // Count system prompt tokens
       let systemPrompt =
         settings.selectedChatMode === "ask" ? askPrompt : buildPrompt;
@@ -79,15 +85,48 @@ export function registerTokenCountHandlers() {
 
       if (chat.app) {
         const appPath = getDyadAppPath(chat.app.path);
-        codebaseInfo = (
-          await extractCodebase({
-            appPath,
-            chatContext: validateChatContext(chat.app.chatContext),
-          })
-        ).formattedOutput;
-        codebaseTokens = estimateTokens(codebaseInfo);
+        const { formattedOutput, files } = await extractCodebase({
+          appPath,
+          chatContext: validateChatContext(chat.app.chatContext),
+        });
+        codebaseInfo = formattedOutput;
+        if (settings.enableDyadPro && settings.enableProSmartFilesContextMode) {
+          codebaseTokens = estimateTokens(
+            files
+              // It doesn't need to be the exact format but it's just to get a token estimate
+              .map(
+                (file) => `<dyad-file=${file.path}>${file.content}</dyad-file>`,
+              )
+              .join("\n\n"),
+          );
+        } else {
+          codebaseTokens = estimateTokens(codebaseInfo);
+        }
         logger.log(
           `Extracted codebase information from ${appPath}, tokens: ${codebaseTokens}`,
+        );
+      }
+
+      // Extract codebases for mentioned apps
+      const mentionedAppsCodebases = await extractMentionedAppsCodebases(
+        mentionedAppNames,
+        chat.app?.id, // Exclude current app
+      );
+
+      // Calculate tokens for mentioned apps
+      let mentionedAppsTokens = 0;
+      if (mentionedAppsCodebases.length > 0) {
+        const mentionedAppsContent = mentionedAppsCodebases
+          .map(
+            ({ appName, codebaseInfo }) =>
+              `\n\n=== Referenced App: ${appName} ===\n${codebaseInfo}`,
+          )
+          .join("");
+
+        mentionedAppsTokens = estimateTokens(mentionedAppsContent);
+
+        logger.log(
+          `Extracted ${mentionedAppsCodebases.length} mentioned app codebases, tokens: ${mentionedAppsTokens}`,
         );
       }
 
@@ -96,12 +135,14 @@ export function registerTokenCountHandlers() {
         messageHistoryTokens +
         inputTokens +
         systemPromptTokens +
-        codebaseTokens;
+        codebaseTokens +
+        mentionedAppsTokens;
 
       return {
         totalTokens,
         messageHistoryTokens,
         codebaseTokens,
+        mentionedAppsTokens,
         inputTokens,
         systemPromptTokens,
         contextWindow: await getContextWindow(),

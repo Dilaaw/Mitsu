@@ -8,10 +8,12 @@ import { rulesRoute } from "./routes/settings/rules";
 import { settingsIndexRoute } from "./routes/settings/index";
 import { appDetailsRoute } from "./routes/app-details";
 import { hubRoute } from "./routes/hub";
+import { libraryRoute } from "./routes/library";
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
   hubRoute,
+  libraryRoute,
   chatRoute,
   appDetailsRoute,
   settingsRoute.addChildren([
