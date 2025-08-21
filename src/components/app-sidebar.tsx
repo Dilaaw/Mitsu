@@ -57,8 +57,8 @@ const items = [
     title: "Library",
     to: "/library",
     icon: BookOpen,
-    glowColor: "#00a95e",
-    hoverColor: "#00a95e",
+    glowColor: "#bb86fc",
+    hoverColor: "#bb86fc",
   },
   {
     title: "Hub",
