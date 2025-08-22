@@ -123,45 +123,52 @@ const ChatMessage = ({ message, isLastMessage }: ChatMessageProps) => {
               )}
             </div>
           )}
-          {message.approvalState && (
-            <div className="mt-2 flex items-center justify-end space-x-1 text-xs">
-              {message.approvalState === "approved" ? (
-                <>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Approved</span>
-                </>
-              ) : message.approvalState === "rejected" ? (
-                <>
-                  <XCircle className="h-4 w-4 text-red-500" />
-                  <span>Rejected</span>
-                </>
-              ) : null}
+          {(message.approvalState ||
+            (message.role === "assistant" && message.createdAt)) && (
+            <div className="mt-2 flex items-center justify-between text-xs">
+              {/* Timestamp and commit info for assistant messages */}
+              {message.role === "assistant" && message.createdAt && (
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-gray-50 dark:bg-gray-800/50 rounded-md">
+                    <Clock className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                    <span className="text-gray-600 dark:text-gray-300">
+                      {formatTimestamp(message.createdAt)}
+                    </span>
+                  </div>
+                  {messageVersion && messageVersion.message && (
+                    <div className="flex items-center space-x-1 px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                      <GitCommit className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                      <span className="max-w-48 truncate text-blue-700 dark:text-blue-300">
+                        {
+                          messageVersion.message
+                            .replace(/^\[dyad\]\s*/i, "")
+                            .split("\n")[0]
+                        }
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Approval state */}
+              {message.approvalState && (
+                <div className="flex items-center space-x-1">
+                  {message.approvalState === "approved" ? (
+                    <>
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span>Approved</span>
+                    </>
+                  ) : message.approvalState === "rejected" ? (
+                    <>
+                      <XCircle className="h-4 w-4 text-red-500" />
+                      <span>Rejected</span>
+                    </>
+                  ) : null}
+                </div>
+              )}
             </div>
           )}
         </div>
-        {/* Timestamp and commit info for assistant messages - only visible on hover */}
-        {message.role === "assistant" && message.createdAt && (
-          <div className="mt-1 flex items-center justify-start space-x-2 text-xs text-gray-500 dark:text-gray-400 ">
-            <div className="flex items-center space-x-1">
-              <Clock className="h-3 w-3" />
-              <span>{formatTimestamp(message.createdAt)}</span>
-            </div>
-            {messageVersion && messageVersion.message && (
-              <div className="flex items-center space-x-1">
-                <GitCommit className="h-3 w-3" />
-                {messageVersion && messageVersion.message && (
-                  <span className="max-w-70 truncate font-medium">
-                    {
-                      messageVersion.message
-                        .replace(/^\[dyad\]\s*/i, "")
-                        .split("\n")[0]
-                    }
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
