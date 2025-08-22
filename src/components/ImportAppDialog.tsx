@@ -162,7 +162,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
         <DialogHeader>
           <DialogTitle>Import App</DialogTitle>
           <DialogDescription>
-            Select an existing app folder to import into Dyad.
+            Select an existing app folder to import into Mitsu.
           </DialogDescription>
         </DialogHeader>
 

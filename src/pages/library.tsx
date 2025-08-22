@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { usePrompts } from "@/hooks/usePrompts";
 import {
   CreatePromptDialog,
   CreateOrEditPromptDialog,
 } from "@/components/CreatePromptDialog";
 import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog";
+import { Info, X } from "lucide-react";
 
 export default function LibraryPage() {
   const { prompts, isLoading, createPrompt, updatePrompt, deletePrompt } =
     usePrompts();
+  const [showInfoBanner, setShowInfoBanner] = useState(true);
 
   return (
     <div className="min-h-screen px-8 py-6">
@@ -17,6 +19,35 @@ export default function LibraryPage() {
           <h1 className="text-3xl font-bold mr-4">Library: Prompts</h1>
           <CreatePromptDialog onCreatePrompt={createPrompt} />
         </div>
+
+        {showInfoBanner && (
+          <div className="mb-6 bg-blue-600/20 border-l-4 border-blue-500 rounded-lg p-4 relative">
+            <button
+              onClick={() => setShowInfoBanner(false)}
+              className="absolute top-3 right-3 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+            >
+              <X size={20} />
+            </button>
+            <div className="flex items-start gap-3 pr-8">
+              <Info
+                className="text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1"
+                size={20}
+              />
+              <div>
+                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                  Prompt Library
+                </h3>
+                <p className="text-blue-800 dark:text-blue-200 text-sm leading-relaxed">
+                  Create, organize, and manage your AI prompts in one place.
+                  Build a collection of reusable prompts to streamline your
+                  workflow and maintain consistency across your projects. Each
+                  prompt can be customized with titles, descriptions, and
+                  detailed content.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {isLoading ? (
           <div>Loading...</div>
