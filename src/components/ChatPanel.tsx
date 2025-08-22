@@ -126,21 +126,21 @@ export function ChatPanel({
 
   // Auto-scroll effect when messages change
   useEffect(() => {
-    if (
-      !isUserScrolling &&
-      messagesContainerRef.current &&
-      messages.length > 0
-    ) {
-      const container = messagesContainerRef.current;
-      const isNearBottom = checkNearBottom(container);
+    if (!isUserScrolling && messagesContainerRef.current) {
+      if (messages.length > 0) {
+        const container = messagesContainerRef.current;
+        const isNearBottom = checkNearBottom(container);
 
-      // Update FAB visibility when new messages arrive
-      setShowScrollFab(!isNearBottom);
+        // Update FAB visibility when new messages arrive
+        setShowScrollFab(!isNearBottom);
 
-      if (isNearBottom) {
-        requestAnimationFrame(() => {
-          scrollToBottom("instant");
-        });
+        if (isNearBottom) {
+          requestAnimationFrame(() => {
+            scrollToBottom("instant");
+          });
+        }
+      } else {
+        setShowScrollFab(false);
       }
     }
   }, [messages, isUserScrolling]);
