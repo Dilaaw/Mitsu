@@ -25,6 +25,7 @@ import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
 import { ResponseNotificationsSwitch } from "@/components/ResponseNotificationsSwitch";
 import { NeonIntegration } from "@/components/NeonIntegration";
 import { CommitPrefixSettings } from "@/components/settings/CommitPrefixSettings";
+import { RuntimeModeSelector } from "@/components/RuntimeModeSelector";
 
 export default function SettingsIndex() {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
@@ -256,6 +257,10 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
 
       <div className="mt-4">
         <ReleaseChannelSelector />
+      </div>
+
+      <div className="mt-4">
+        <RuntimeModeSelector />
       </div>
 
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-4">
