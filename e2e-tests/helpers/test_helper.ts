@@ -6,10 +6,7 @@ import path from "path";
 import os from "os";
 import { execSync } from "child_process";
 import { generateAppFilesSnapshotData } from "./generateAppFilesSnapshotData";
-import {
-  BUILD_SYSTEM_POSTFIX,
-  BUILD_SYSTEM_PREFIX,
-} from "@/prompts/system_prompt";
+import { BUILD_SYSTEM_PROMPT } from "@/prompts/default_prompts";
 
 const showDebugLogs = process.env.DEBUG_LOGS === "true";
 
@@ -1148,13 +1145,11 @@ function prettifyDump(
       const content = Array.isArray(message.content)
         ? JSON.stringify(message.content)
         : message.content
-            .replace(BUILD_SYSTEM_PREFIX, "\n${BUILD_SYSTEM_PREFIX}")
-            .replace(BUILD_SYSTEM_POSTFIX, "${BUILD_SYSTEM_POSTFIX}")
             // Normalize line endings to always use \n
             .replace(/\r\n/g, "\n")
-            // We remove package.json because it's flaky.
-            // Depending on whether pnpm install is run, it will be modified,
-            // and the contents and timestamp (thus affecting order) will be affected.
+            // Normalize the default system prompt for snapshot stability
+            .replace(BUILD_SYSTEM_PROMPT, "${BUILD_SYSTEM_PROMPT}")
+            // Remove package.json file blocks for snapshot stability
             .replace(
               /\n<mitsu-file path="package\.json">[\s\S]*?<\/mitsu-file>\n/g,
               "",
