@@ -1,7 +1,7 @@
 import { ipcMain, app } from "electron";
 import { db, getDatabasePath } from "../../db";
 import { apps, chats } from "../../db/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import type {
   App,
   CreateAppParams,
@@ -685,8 +685,27 @@ export function registerAppHandlers() {
     const allApps = await db.query.apps.findMany({
       orderBy: [desc(apps.createdAt)],
     });
+
+    // Check which apps still exist on disk and clean up deleted ones
+    const validApps = [];
+    const deletedAppIds = [];
+
+    for (const app of allApps) {
+      const appPath = getDyadAppPath(app.path);
+      if (fs.existsSync(appPath)) {
+        validApps.push(app);
+      } else {
+        deletedAppIds.push(app.id);
+      }
+    }
+
+    // Remove deleted apps from database
+    if (deletedAppIds.length > 0) {
+      await db.delete(apps).where(inArray(apps.id, deletedAppIds));
+    }
+
     return {
-      apps: allApps,
+      apps: validApps,
       appBasePath: getDyadAppPath("$APP_BASE_PATH"),
     };
   });
