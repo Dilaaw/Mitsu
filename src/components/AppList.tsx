@@ -1,6 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
-import { PlusCircle, RefreshCw } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { useAtom, useSetAtom } from "jotai";
 import { selectedAppIdAtom } from "@/atoms/appAtoms";
 import {
@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { selectedChatIdAtom } from "@/atoms/chatAtoms";
 import { useLoadApps } from "@/hooks/useLoadApps";
 
@@ -42,16 +43,12 @@ export function AppList({ show }: { show?: boolean }) {
     <SidebarGroup className="overflow-y-auto h-[calc(100vh-112px)]">
       <div className="flex items-center justify-between px-2">
         <SidebarGroupLabel>Your Apps</SidebarGroupLabel>
-        <Button
+        <RefreshButton
           onClick={refreshApps}
-          variant="ghost"
-          size="sm"
-          className="h-6 w-6 p-0 hover:bg-sidebar-accent/80"
+          loading={loading}
           title="Refresh apps list"
-          disabled={loading}
-        >
-          <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-        </Button>
+          size={14}
+        />
       </div>
       <SidebarGroupContent>
         <div className="flex flex-col space-y-2">
